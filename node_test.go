@@ -63,3 +63,7 @@ func TestCloneNode(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestCompareDocumentPosition(t *testing.T) {
+	// TODO func TestCompareDocumentPosition(t *testing.T)
+}
