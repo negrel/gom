@@ -18,6 +18,7 @@ import (
 // and serves as an entry point into the page's
 // content
 // https://developer.mozilla.org/en-US/docs/Web/API/Document
+// https://dom.spec.whatwg.org/#document
 type Document struct {
 	Node
 	body         *Node

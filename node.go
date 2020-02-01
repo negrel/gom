@@ -16,8 +16,12 @@ import (
  * all obsolete methods
  */
 
-// Node is the base object for any DOM object.
+// Node is an abstract object and does not
+// exist as node. It is used embedded by all
+// nodes (Document, DocumentType,
+// Element, Text, and Comment).
 // https://developer.mozilla.org/en-US/docs/Web/API/Node
+// https://dom.spec.whatwg.org/#node
 type Node struct {
 	childNodes    *NodeList
 	isConnected   bool
@@ -44,6 +48,7 @@ const (
 	TextNode
 	CommentNode
 	DocumentNode
+	DocumentTypeNode
 )
 
 func newNode() *Node {
@@ -91,6 +96,7 @@ func (n *Node) NextSibling() *Node {
 // the name of the node type.
 func (n *Node) NodeName() string {
 	// TODO func (n *Node) NodeName() string
+	// https://dom.spec.whatwg.org/#dom-node-nodename
 	return ""
 }
 
@@ -99,6 +105,7 @@ func (n *Node) NodeName() string {
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
 func (n *Node) NodeType() int {
 	// TODO func (n *Node) NodeName() string
+	// https://dom.spec.whatwg.org/#dom-node-nodetype
 	return n.nodeType
 }
 
@@ -133,7 +140,7 @@ func (n *Node) PreviousSibling() *Node {
 // of an element and all its descendants.
 func (n *Node) TextContent() string {
 	// TODO func (n *Node) TextContent() string
-	// https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
+	// https://dom.spec.whatwg.org/#dom-node-textcontent
 	return ""
 }
 
@@ -153,7 +160,7 @@ func (n *Node) setParentNode(parent *Node) {
 // of an element and all its descendants.
 func (n *Node) SetTextContent(content string) {
 	// TODO func (n *Node) SetTextContent(string)
-	// https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
+	// https://dom.spec.whatwg.org/#dom-node-textcontent
 }
 
 /*****************************************************
@@ -202,6 +209,7 @@ func (n *Node) CloneNode(deep bool) *Node {
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition
 func (n *Node) CompareDocumentPosition(other Node) int {
 	// TODO func (n *Node) CompareDocumentPosition(other Node) int
+	// https://dom.spec.whatwg.org/#dom-node-comparedocumentposition
 	return 0
 }
 
@@ -330,6 +338,7 @@ func (n *Node) IsSameNode(other *Node) bool {
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/normalize
 func (n *Node) Normalize() {
 	// TODO func (n *Node) Normalize()
+	// https://dom.spec.whatwg.org/#dom-node-normalize
 }
 
 // RemoveChild method removes a child node from the DOM
