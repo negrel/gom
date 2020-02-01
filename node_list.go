@@ -1,28 +1,23 @@
 package dom
 
 // NodeList objects are collections of nodes (live)
-type NodeList interface {
-	append(...Node) NodeList
-	ForEach(func(i int, c Node))
-	IndexOf(node Node) int
-	Item(index int) Node
-	Length() int
-	Values() []Node
+type NodeList struct {
+	list []*Node
 }
 
-var _ NodeList = &BasicNodeList{}
+func (nl *NodeList) append(node Node) *Node {
+	var child = &node
+	nl.list = append(nl.list, child)
+	return child
+}
 
-// BasicNodeList is the basic node list
-type BasicNodeList []Node
-
-func (nl *BasicNodeList) append(nodes ...Node) NodeList {
-	var tmp = BasicNodeList(append(nl.Values(), nodes...))
-	return &tmp
+func (nl *NodeList) appendList(nodes ...*Node) {
+	nl.list = append(nl.list, nodes...)
 }
 
 // ForEach apply the given function for each of
 // the Node in the list.
-func (nl *BasicNodeList) ForEach(fn func(i int, c Node)) {
+func (nl *NodeList) ForEach(fn func(i int, c *Node)) {
 	for i, v := range nl.Values() {
 		fn(i, v)
 	}
@@ -30,7 +25,7 @@ func (nl *BasicNodeList) ForEach(fn func(i int, c Node)) {
 
 // IndexOf method return the index of the
 // searched node and return -1 if not found.
-func (nl *BasicNodeList) IndexOf(searched Node) int {
+func (nl *NodeList) IndexOf(searched *Node) int {
 	for index, node := range nl.Values() {
 		if same := searched.IsSameNode(node); same {
 			return index
@@ -41,19 +36,18 @@ func (nl *BasicNodeList) IndexOf(searched Node) int {
 }
 
 // Item return a node from the Node list by index
-func (nl *BasicNodeList) Item(index int) Node {
+func (nl *NodeList) Item(index int) *Node {
 	return nl.Values()[index]
 }
 
 // Length method return the number of node in the list
-func (nl *BasicNodeList) Length() int {
+func (nl *NodeList) Length() int {
 	return len(nl.Values())
 }
 
 // Values method returns an iterator allowing to go
 // through all values contained in this object.
 // https://developer.mozilla.org/en-US/docs/Web/API/NodeList/values
-func (nl *BasicNodeList) Values() []Node {
-	var tmp = *nl
-	return tmp
+func (nl *NodeList) Values() []*Node {
+	return nl.list
 }
