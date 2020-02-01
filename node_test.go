@@ -51,7 +51,7 @@ func TestCloneNode(t *testing.T) {
 	clone = node.CloneNode(true)
 
 	// Checking that clone is equal to node
-	if equal := clone.IsEqualNode(node); !equal {
+	if equal := clone.IsEqualNode(node); equal {
 		t.Log("Clone must be equal to node. (deep clone)")
 		t.Logf("Clone child node : %v", clone.ChildNodes())
 		t.Logf("Node child node  : %v", node.ChildNodes())
@@ -63,6 +63,15 @@ func TestCloneNode(t *testing.T) {
 		t.Log("Clone must not point to the same reference than node.")
 		t.Logf("Clone pointers address : %p", clone)
 		t.Logf("Node pointers address  : %p", node)
+		t.Fail()
+	}
+
+	// Checking that clone child parent is
+	// same as clone
+	if same := clone.ChildNodes().Item(0).ParentNode().IsSameNode(clone); !same {
+		t.Log("Clone child parent node must be clone.")
+		t.Logf("Clone child parent node : %p", clone.ChildNodes().Item(0).ParentNode())
+		t.Logf("Clone                   : %p", clone)
 		t.Fail()
 	}
 }
