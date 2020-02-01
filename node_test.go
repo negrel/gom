@@ -305,3 +305,20 @@ func TestRemoveChild(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestReplaceChild(t *testing.T) {
+	node := newNode()
+	child := newNode()
+
+	child = node.AppendChild(child)
+
+	child2 := node.CloneNode(true)
+
+	node.ReplaceChild(child2, child)
+
+	// Checking that child2 is same as
+	// node first direct child
+	if same := node.ChildNodes().Item(0).IsSameNode(child2); !same {
+		t.Fail()
+	}
+}
