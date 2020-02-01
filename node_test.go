@@ -93,3 +93,35 @@ func TestContains(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestGetRootNode(t *testing.T) {
+	node := newNode()
+	child1 := newNode()
+	child2 := newNode()
+
+	child1 = node.AppendChild(child1)
+
+	// Checking that node root is node
+	if same := node.GetRootNode().IsSameNode(node); !same {
+		t.Log("Node root node must be node itself")
+		t.Logf("Node root pointer address : %p", node.GetRootNode())
+		t.Logf("Node pointer address      : %p", node)
+		t.Fail()
+	}
+
+	// Checking that child root is node
+	if same := child1.GetRootNode().IsSameNode(node); !same {
+		t.Log("Node must be the root node of child1")
+		t.Logf("Child1 root pointer address : %p", child1.GetRootNode())
+		t.Logf("Node pointer address        : %p", node)
+		t.Fail()
+	}
+
+	// Checking that child2 root is not node
+	if same := child2.GetRootNode().IsSameNode(node); same {
+		t.Log("Node must not be the root node of child2")
+		t.Logf("Child2 root pointer address : %p", child2.GetRootNode())
+		t.Logf("Node pointer address        : %p", node)
+		t.Fail()
+	}
+}
