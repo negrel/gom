@@ -71,11 +71,17 @@ func TestCompareDocumentPosition(t *testing.T) {
 func TestContains(t *testing.T) {
 	node := newNode()
 	child1 := newNode()
-	child2 := newNode()
+	child2 := child1.CloneNode(false)
 
 	child1 = node.AppendChild(child1)
 
-	// node doesn't containt child2
+	// Checking that child1 is equal child2
+	if equal := child1.IsEqualNode(child2); !equal {
+		t.Log("Child2 must be a clone of child1.")
+		t.Fail()
+	}
+
+	// Checking that node doesn't contain child2
 	if contain := node.Contains(child2); contain {
 		t.Log("Node must not contain child2.")
 		t.Fail()
@@ -83,11 +89,13 @@ func TestContains(t *testing.T) {
 
 	child2 = child1.AppendChild(child2)
 
+	// Checking that child1 contain child2
 	if contain := child1.Contains(child2); !contain {
 		t.Log("Child1 must contain child2. (direct child)")
 		t.Fail()
 	}
 
+	// Checking that node contain child2 (child of child1)
 	if contain := node.Contains(child2); !contain {
 		t.Log("Node must contain child2. (direct child of child1)")
 		t.Fail()
