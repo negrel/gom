@@ -250,3 +250,7 @@ func TestIsEqualNode(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestNormalize(t *testing.T) {
+	// TODO func TestNormalize(t *testing.T)
+}
