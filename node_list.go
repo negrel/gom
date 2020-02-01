@@ -1,4 +1,4 @@
-package dom
+package gom
 
 // NodeList objects are collections of nodes (live)
 type NodeList struct {

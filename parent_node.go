@@ -1,4 +1,4 @@
-package dom
+package gom
 
 // ParentNode mixin contains methods and properties
 // that are common to all types of Node objects that can have children

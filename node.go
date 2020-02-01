@@ -1,4 +1,4 @@
-package dom
+package gom
 
 import (
 	"errors"
@@ -9,9 +9,11 @@ import (
  * baseURI
  * baseURIObject
  * nodeName
+ * all obsolete props
  * ** Methods **
  * isDefaultNameSpace
  * lookupPrefix
+ * all obsolete methods
  */
 
 // Node is the base object for any DOM object.

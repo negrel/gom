@@ -1,8 +1,26 @@
-package dom
+package gom
+
+import (
+	"golang.org/x/text/encoding"
+)
+
+/* TODO Document missing props & methods :
+ * ** Props **
+ * compatMode (experimental api)
+ * contentType (experimental api)
+ * all obsolete props
+ *
+ * ** Methods **
+ * all obsolete methods
+ */
 
 // Document interface represents any page loaded
-// in the browser and serves as an entry point into
-// the page's content
+// and serves as an entry point into the page's
+// content
+// https://developer.mozilla.org/en-US/docs/Web/API/Document
 type Document struct {
 	Node
+	body         *Node
+	characterSet encoding.Encoding
+	docType      DocumentType
 }

@@ -1,4 +1,4 @@
-package dom
+package gom
 
 // Element is most general base class from which all
 // objects in a Document inherit

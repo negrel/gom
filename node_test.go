@@ -1,4 +1,4 @@
-package dom
+package gom
 
 import (
 	"math/rand"
