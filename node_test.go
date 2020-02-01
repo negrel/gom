@@ -29,7 +29,9 @@ func TestAppendChild(t *testing.T) {
 func TestCloneNode(t *testing.T) {
 	node := newNode()
 	child := newNode()
+	child2 := newNode()
 
+	node.AppendChild(child2)
 	child = node.AppendChild(child)
 
 	// Clone the node but not his childs
@@ -53,4 +55,11 @@ func TestCloneNode(t *testing.T) {
 		t.Fail()
 	}
 
+	// Clone must not be the same
+	if same := clone.IsSameNode(node); same {
+		t.Log("Clone must not point to the same reference than node.")
+		t.Logf("Clone pointers address : %p", clone)
+		t.Logf("Node pointers address  : %p", node)
+		t.Fail()
+	}
 }
