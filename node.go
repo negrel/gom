@@ -2,7 +2,6 @@ package dom
 
 import (
 	"errors"
-	"fmt"
 )
 
 // Node is the base object for any DOM object.
@@ -44,6 +43,10 @@ func newNode() *Node {
 		parentElement: nil,
 	}
 }
+
+/*****************************************************
+ **************** Getters & Setters ******************
+ *****************************************************/
 
 // ChildNodes return a node list containing
 func (n *Node) ChildNodes() *NodeList {
@@ -159,8 +162,6 @@ func (n *Node) AppendChild(child *Node) *Node {
 	var copy = *child
 	child = n.childNodes.append(copy)
 	child.setParentNode(n)
-
-	fmt.Println(n.childNodes)
 
 	return child
 }
@@ -324,7 +325,7 @@ func (n *Node) RemoveChild(child *Node) (*Node, error) {
 
 	// Child not found.
 	if err := childIndex == -1; err {
-		return child, errors.New("The child to remove must be a direct child")
+		return child, errors.New("The given node is not a direct child")
 	}
 
 	// Slice of all the child before the child to remove
@@ -343,7 +344,8 @@ func (n *Node) RemoveChild(child *Node) (*Node, error) {
 		afterChild = n.childNodes.Values()[childIndex+1:]
 	}
 
-	// Child is removed
+	// Appending slice of nodes child before and after
+	// the child to remove.
 	n.childNodes.appendList(beforeChild...)
 	n.childNodes.appendList(afterChild...)
 
@@ -354,8 +356,18 @@ func (n *Node) RemoveChild(child *Node) (*Node, error) {
 // given (parent) node.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/replaceChild
 func (n *Node) ReplaceChild(newChild, oldChild *Node) (*Node, error) {
-	newChild = n.InsertBefore(newChild, oldChild)
+	// Reference node is use to insert the child after this node.
+	var reference = oldChild.PreviousSibling()
+	var replacedChild *Node = nil
+
+	// Removing the old child
 	_, err := n.RemoveChild(oldChild)
 
-	return newChild, err
+	// Inserting the new child after the reference node.
+	if err == nil {
+		replacedChild = n.InsertBefore(newChild, reference.NextSibling())
+	}
+
+	// returning the inserted newChild and the error if there is one
+	return replacedChild, err
 }

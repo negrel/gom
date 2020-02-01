@@ -25,3 +25,32 @@ func TestAppendChild(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestCloneNode(t *testing.T) {
+	node := newNode()
+	child := newNode()
+
+	child = node.AppendChild(child)
+
+	// Clone the node but not his childs
+	clone := node.CloneNode(false)
+
+	// Clone must not be equal (different childs)
+	if equal := clone.IsEqualNode(node); equal {
+		t.Log("Clone must not be equal to node. (different child)")
+		t.Logf("Clone child node : %v", clone.ChildNodes())
+		t.Logf("Node child node  : %v", node.ChildNodes())
+		t.Fail()
+	}
+
+	clone = node.CloneNode(true)
+
+	// Clone must be equal (deep clone)
+	if equal := clone.IsEqualNode(node); !equal {
+		t.Log("Clone must be equal to node. (deep clone)")
+		t.Logf("Clone child node : %v", clone.ChildNodes())
+		t.Logf("Node child node  : %v", node.ChildNodes())
+		t.Fail()
+	}
+
+}
