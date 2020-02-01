@@ -37,12 +37,19 @@ func (nl *NodeList) IndexOf(searched *Node) int {
 
 // Item return a node from the Node list by index
 func (nl *NodeList) Item(index int) *Node {
-	return nl.Values()[index]
+	if index >= 0 && index < nl.Length() {
+		return nl.Values()[index]
+	}
+	return nil
 }
 
 // Length method return the number of node in the list
 func (nl *NodeList) Length() int {
 	return len(nl.Values())
+}
+
+func (nl *NodeList) set(index int, node *Node) {
+	nl.list[index] = node
 }
 
 // Values method returns an iterator allowing to go
