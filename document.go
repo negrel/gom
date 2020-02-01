@@ -24,10 +24,10 @@ import (
  * SelectedStyleSheetSet
  * styleSheetSets
  * timeline
- * all obsolete props
+ * all obsolete or non-standardized props
  *
  * ** Methods **
- * all obsolete methods
+ * all obsolete or non-standardized methods
  */
 
 // Document interface represents any page loaded

@@ -9,11 +9,11 @@ import (
  * baseURI
  * baseURIObject
  * nodeName
- * all obsolete props
+ * all obsolete or non-standardized props
  * ** Methods **
  * isDefaultNameSpace
  * lookupPrefix
- * all obsolete methods
+ * all obsolete or non-standardized methods
  */
 
 // Node is an abstract object and does not
