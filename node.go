@@ -167,7 +167,8 @@ func (n *Node) AppendChild(child *Node) *Node {
 }
 
 // CloneNode method return a duplicate of the node on
-// which this method was called.
+// which this method was called. Set the deep argument
+// to true if you want the childs to be cloned
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode
 func (n *Node) CloneNode(deep bool) *Node {
 	clone := newNode()

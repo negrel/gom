@@ -141,3 +141,23 @@ func TestGetRootNode(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestHasChildNodes(t *testing.T) {
+	node := newNode()
+	child := newNode()
+	clone := node.CloneNode(false)
+
+	node.AppendChild(child)
+
+	// Checking that node has child.
+	if hasChild := node.HasChildNodes(); !hasChild {
+		t.Log("Node have child. (node.HasChildNodes must return true)")
+		t.Fail()
+	}
+
+	// Checking that clone has not child.
+	if hasChild := clone.HasChildNodes(); hasChild {
+		t.Log("Clone haven't any child. (clone.HasChildNodes must return false)")
+		t.Fail()
+	}
+}
