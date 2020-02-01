@@ -8,6 +8,22 @@ import (
  * ** Props **
  * compatMode (experimental api)
  * contentType (experimental api)
+ * documentURI
+ * embeds
+ * fonts
+ * forms
+ * images
+ * implementation
+ * lastStyleSheetSet
+ * links
+ * plugins
+ * featurePolicy (experimental api)
+ * preferredStyleSheetSet
+ * scripts
+ * scrollingElement
+ * SelectedStyleSheetSet
+ * styleSheetSets
+ * timeline
  * all obsolete props
  *
  * ** Methods **
@@ -21,7 +37,11 @@ import (
 // https://dom.spec.whatwg.org/#document
 type Document struct {
 	Node
-	body         *Node
-	characterSet encoding.Encoding
-	docType      DocumentType
+	body            *Node
+	characterSet    encoding.Encoding
+	docType         DocumentType
+	documentElement Element
+	head            Element
+	hidden          bool
+	visibilityState string
 }
