@@ -4,6 +4,16 @@ import (
 	"errors"
 )
 
+/* TODO Node missing props & methods :
+ * ** Props **
+ * baseURI
+ * baseURIObject
+ * nodeName
+ * ** Methods **
+ * isDefaultNameSpace
+ * lookupPrefix
+ */
+
 // Node is the base object for any DOM object.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node
 type Node struct {
