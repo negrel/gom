@@ -352,6 +352,9 @@ func (n *Node) RemoveChild(child *Node) (*Node, error) {
 	n.childNodes.appendList(beforeChild...)
 	n.childNodes.appendList(afterChild...)
 
+	// Removing parent of the child
+	child.parentNode = nil
+
 	return child, nil
 }
 

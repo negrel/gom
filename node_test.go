@@ -70,8 +70,8 @@ func TestCloneNode(t *testing.T) {
 	// same as clone
 	if same := clone.ChildNodes().Item(0).ParentNode().IsSameNode(clone); !same {
 		t.Log("Clone child parent node must be clone.")
-		t.Logf("Clone child parent node : %p", clone.ChildNodes().Item(0).ParentNode())
-		t.Logf("Clone                   : %p", clone)
+		t.Logf("Clone child parent node pointer address : %p", clone.ChildNodes().Item(0).ParentNode())
+		t.Logf("Clone pointer address                   : %p", clone)
 		t.Fail()
 	}
 }
@@ -190,7 +190,6 @@ func TestInsertBefore(t *testing.T) {
 
 	// The node to insert
 	new := newNode()
-
 	new = node.InsertBefore(new, reference)
 
 	// Check if the node to insert is at the
@@ -253,4 +252,56 @@ func TestIsEqualNode(t *testing.T) {
 
 func TestNormalize(t *testing.T) {
 	// TODO func TestNormalize(t *testing.T)
+}
+
+func TestRemoveChild(t *testing.T) {
+	node := newNode()
+	child := newNode()
+
+	child = node.AppendChild(child)
+
+	// Checking that node contains the child
+	if contain := node.Contains(child); !contain {
+		t.Log("Node must contain the child.")
+		t.FailNow()
+	}
+
+	// Removing the child
+	child, err := node.RemoveChild(child)
+
+	// Checking that no error occur while
+	// removing the child
+	if err != nil {
+		t.Logf("Error while removing the child : %v", err)
+		t.Fail()
+	}
+
+	// Checking that child parent is
+	// not the same as node
+	if same := child.ParentNode().IsSameNode(node); same {
+		t.Log("Child parent must not be node anymore.")
+		t.Logf("Child parent node pointer address : %p", child.ParentNode())
+		t.Logf("Node pointer address              : %p", node)
+		t.Fail()
+	}
+
+	// Checking that the node doesn't
+	// contain the child anymore
+	if contain := node.Contains(child); !contain {
+		t.Log("Node must not contain the child.")
+		t.Fail()
+	}
+
+	/*
+	 * Testing error
+	 */
+
+	child = node.AppendChild(child)
+
+	_, err = node.RemoveChild(nil)
+
+	if err == nil {
+		t.Log("Removing a nil node child pointer must return an error.")
+		t.Fail()
+	}
 }
