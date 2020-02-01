@@ -200,3 +200,44 @@ func TestInsertBefore(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestIsEqualNode(t *testing.T) {
+	node := newNode()
+	clone := node.CloneNode(false)
+
+	// Checking that clone is equal node
+	if equal := node.IsEqualNode(clone); !equal {
+		t.Log("Clone must be equal to node. (same node type)")
+		t.Fail()
+	}
+
+	// Changing node type so clone is
+	// not equal to node.
+	clone.setNodeType(1)
+
+	// Checking that clone is not equal node
+	if equal := node.IsEqualNode(clone); equal {
+		t.Log("Clone must not be equal to node. (different node type)")
+		t.Fail()
+	}
+
+	node.AppendChild(newNode())
+
+	// Recloning node (with child)
+	clone = node.CloneNode(true)
+
+	// Checking that clone is equal node
+	if equal := node.IsEqualNode(clone); !equal {
+		t.Log("Clone must be equal to node. (same childrens)")
+		t.Fail()
+	}
+
+	// Recloning node (without child)
+	clone = node.CloneNode(false)
+
+	// Checking that clone is not equal node
+	if equal := node.IsEqualNode(clone); equal {
+		t.Log("Clone must not be equal to node. (different childrens)")
+		t.Fail()
+	}
+}
