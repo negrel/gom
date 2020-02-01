@@ -361,19 +361,15 @@ func (n *Node) RemoveChild(child *Node) (*Node, error) {
 // ReplaceChild method replaces a child node within the
 // given (parent) node.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/replaceChild
-func (n *Node) ReplaceChild(newChild, oldChild *Node) (*Node, error) {
-	// Reference node is use to insert the child after this node.
-	var reference = oldChild.PreviousSibling()
-	var replacedChild *Node = nil
+func (n *Node) ReplaceChild(newChild, oldChild *Node) error {
 
-	// Removing the old child
-	_, err := n.RemoveChild(oldChild)
+	index := n.childNodes.IndexOf(oldChild)
 
-	// Inserting the new child after the reference node.
-	if err == nil {
-		replacedChild = n.InsertBefore(newChild, reference.NextSibling())
+	if index == -1 {
+		return errors.New("The node to be replaced is not a child of this node")
 	}
 
-	// returning the inserted newChild and the error if there is one
-	return replacedChild, err
+	n.childNodes.set(index, newChild)
+
+	return nil
 }
