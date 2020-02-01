@@ -239,7 +239,9 @@ func (n *Node) HasChildNodes() bool {
 }
 
 // InsertBefore method inserts a node before a reference
-// node as a child of the node on which this method was called.
+// node as a child (or append the node if the reference
+// node is not a direct child) of the node on which this
+// method was called.
 // Return the inserted node.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/insertBefore
 func (n *Node) InsertBefore(new *Node, reference *Node) *Node {

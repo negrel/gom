@@ -1,6 +1,7 @@
 package dom
 
 import (
+	"math/rand"
 	"testing"
 )
 
@@ -101,7 +102,8 @@ func TestContains(t *testing.T) {
 		t.Fail()
 	}
 
-	// Checking that node contain child2 (child of child1)
+	// Checking that node contain child2
+	// (child of child1)
 	if contain := node.Contains(child2); !contain {
 		t.Log("Node must contain child2 (direct child of child1). (pointer must be the same)")
 		t.Logf("Child1 childrens pointer address : %v", child1.ChildNodes().Values())
@@ -158,6 +160,43 @@ func TestHasChildNodes(t *testing.T) {
 	// Checking that clone has not child.
 	if hasChild := clone.HasChildNodes(); hasChild {
 		t.Log("Clone haven't any child. (clone.HasChildNodes must return false)")
+		t.Fail()
+	}
+}
+
+func TestInsertBefore(t *testing.T) {
+	node := newNode()
+
+	childNodesCount := 1000
+
+	// Appending 100 of child to node
+	for i := 0; i < childNodesCount; i++ {
+		child := newNode()
+		node.AppendChild(child)
+	}
+
+	// Pick a random reference child node
+	index := rand.Intn(childNodesCount)
+	reference := node.ChildNodes().Item(index)
+
+	// The node to insert
+	new := newNode()
+
+	new = node.InsertBefore(new, reference)
+
+	// Check if the node to insert is at the
+	// good index
+	if insertedIndex := node.ChildNodes().IndexOf(new); insertedIndex != index {
+		t.Logf("Inserted node index is %v and should be %v.", insertedIndex, index)
+		t.Fail()
+	}
+
+	// Checking that node at inserted index
+	// is the same that the inserted one
+	if same := node.ChildNodes().Item(index).IsSameNode(new); !same {
+		t.Log("Child at inserted index must be the same node than the inserted one.")
+		t.Logf("Child at inserted index pointer address : %p", node.ChildNodes().Item(index))
+		t.Logf("Inserted node pointer address           : %p", new)
 		t.Fail()
 	}
 }
