@@ -4,7 +4,7 @@ import (
 	"golang.org/x/text/encoding"
 )
 
-/* NOTE Document missing props & methods :
+/* NOTE Document missing props & methods (OFFICIAL DOM) :
  * ** Props **
  * compatMode (experimental api)
  * contentType (experimental api)
@@ -37,6 +37,7 @@ import (
 // https://dom.spec.whatwg.org/#document
 type Document struct {
 	Node
+	ParentNode
 	body            *Node
 	characterSet    encoding.Encoding
 	docType         DocumentType
@@ -44,12 +45,4 @@ type Document struct {
 	head            Element
 	hidden          bool
 	visibilityState string
-}
-
-// AdoptNode transfers a node from another
-// document into the document on which the
-// method was called.
-// https://developer.mozilla.org/en-US/docs/Web/API/Document/adoptNode
-func (d *Document) AdoptNode(other Node) {
-
 }

@@ -1,6 +1,6 @@
 package gom
 
-/* NOTE Node missing props & methods :
+/* NOTE Node missing props & methods (OFFICIAL DOM) :
  * ** Props **
  * baseURI
  * baseURIObject
