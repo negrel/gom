@@ -7,6 +7,16 @@ type GOMLCollection struct {
 	list []*Element
 }
 
+func newGOMLCollection() *GOMLCollection {
+	return &GOMLCollection{
+		list: []*Element{},
+	}
+}
+
+/*****************************************************
+ ********************* Methods ***********************
+ *****************************************************/
+
 // Item return the element at the given index
 // of the collection.
 // https://dom.spec.whatwg.org/#dom-htmlcollection-item
