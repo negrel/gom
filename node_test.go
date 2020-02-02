@@ -51,10 +51,10 @@ func TestCloneNode(t *testing.T) {
 	clone = node.CloneNode(true)
 
 	// Checking that clone is equal to node
-	if equal := clone.IsEqualNode(node); equal {
+	if equal := clone.IsEqualNode(node); !equal {
 		t.Log("Clone must be equal to node. (deep clone)")
-		t.Logf("Clone child node : %v", clone.ChildNodes())
-		t.Logf("Node child node  : %v", node.ChildNodes())
+		t.Logf("Clone child node : %v", clone.ChildNodes().Values())
+		t.Logf("Node child node  : %v", node.ChildNodes().Values())
 		t.Fail()
 	}
 
