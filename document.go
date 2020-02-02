@@ -50,6 +50,6 @@ type Document struct {
 // document into the document on which the
 // method was called.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/adoptNode
-func (d *Document) AdoptNode() {
-	// TODO func (d *Document) AdoptNode()
+func (d *Document) AdoptNode(other Node) {
+
 }

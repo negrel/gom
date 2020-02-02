@@ -321,4 +321,15 @@ func TestReplaceChild(t *testing.T) {
 	if same := node.ChildNodes().Item(0).IsSameNode(child2); !same {
 		t.Fail()
 	}
+
+	/*
+	 * Testing error
+	 */
+
+	err := node.ReplaceChild(child2, nil)
+
+	if err == nil {
+		t.Log("Replacing a nil node child pointer must return an error.")
+		t.Fail()
+	}
 }
