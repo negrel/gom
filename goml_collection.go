@@ -14,6 +14,16 @@ func newGOMLCollection() *GOMLCollection {
 }
 
 /*****************************************************
+ **************** Getters & Setters ******************
+ *****************************************************/
+
+// Length method return the number of elements in
+// the collection
+func (c *GOMLCollection) Length() int {
+	return len(c.list)
+}
+
+/*****************************************************
  ********************* Methods ***********************
  *****************************************************/
 
@@ -25,10 +35,4 @@ func (c *GOMLCollection) Item(index int) *Element {
 		return c.list[index]
 	}
 	return nil
-}
-
-// Length method return the number of elements in
-// the collection
-func (c *GOMLCollection) Length() int {
-	return len(c.list)
 }
