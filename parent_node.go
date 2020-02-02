@@ -2,6 +2,8 @@ package gom
 
 // ParentNode mixin contains methods and properties
 // that are common to all types of Node objects that can have children
+// https://developer.mozilla.org/en-US/docs/Web/API/ParentNode
+// https://dom.spec.whatwg.org/#parentnode
 type ParentNode struct {
 	children *GOMLCollection
 }
