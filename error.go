@@ -1,5 +1,10 @@
 package gom
 
+import (
+	"fmt"
+	"io"
+)
+
 // GOMError is the possible error
 // returned by DOM function
 // https://heycam.github.io/webidl/#idl-DOMException
@@ -10,7 +15,7 @@ type GOMError struct {
 	code    int
 }
 
-// DOMError code list
+// GOMError code list
 const (
 	_ = iota
 	ErrHierarchyRequest
@@ -24,7 +29,6 @@ const (
 	ErrSyntax
 	ErrInvalidModification
 	ErrSecurity
-	ErrNetwork
 	ErrAbort
 	ErrQuotaExceeded
 	ErrTimeout
@@ -44,7 +48,6 @@ var errCode = map[string]int{
 	"ErrSyntax":                ErrSyntax,
 	"ErrInvalidModification":   ErrInvalidModification,
 	"ErrSecurity":              ErrSecurity,
-	"ErrNetwork":               ErrNetwork,
 	"ErrAbort":                 ErrAbort,
 	"ErrQuotaExceeded":         ErrQuotaExceeded,
 	"ErrTimeout":               ErrTimeout,
@@ -72,4 +75,21 @@ func (e *GOMError) Message() string {
 // Name method return the error name
 func (e *GOMError) Name() string {
 	return e.name
+}
+
+// String method return the formatted string
+// error
+func (e *GOMError) String() string {
+	return fmt.Sprintf("[%v] - %v", e.Code(), e.Message())
+}
+
+// Print the GOM Error
+func (e *GOMError) Print() {
+	fmt.Print(e.String())
+}
+
+// Fprint method print the error to the given
+// writer
+func (e *GOMError) Fprint(w io.Writer) {
+	fmt.Fprint(w, e.String())
 }
