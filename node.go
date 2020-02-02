@@ -1,9 +1,5 @@
 package gom
 
-import (
-	"errors"
-)
-
 /* NOTE Node missing props & methods :
  * ** Props **
  * baseURI
@@ -344,12 +340,13 @@ func (n *Node) Normalize() {
 // RemoveChild method removes a child node from the DOM
 // and returns the removed node.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild
-func (n *Node) RemoveChild(child *Node) (*Node, error) {
+func (n *Node) RemoveChild(child *Node) (*Node, *GOMError) {
 	childIndex := n.childNodes.IndexOf(child)
 
 	// Child not found.
 	if err := childIndex == -1; err {
-		return child, errors.New("The given node is not a direct child")
+		return child,
+			newGOMError("The node to be removed is not a child of this node", "ErrNotFound")
 	}
 
 	// Slice of all the child before the child to remove
@@ -382,12 +379,12 @@ func (n *Node) RemoveChild(child *Node) (*Node, error) {
 // ReplaceChild method replaces a child node within the
 // given (parent) node.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/replaceChild
-func (n *Node) ReplaceChild(newChild, oldChild *Node) error {
+func (n *Node) ReplaceChild(newChild, oldChild *Node) *GOMError {
 
 	index := n.childNodes.IndexOf(oldChild)
 
 	if index == -1 {
-		return errors.New("The node to be replaced is not a child of this node")
+		return newGOMError("The node to be replaced is not a child of this node", "ErrNotFound")
 	}
 
 	n.childNodes.set(index, newChild)
