@@ -59,7 +59,7 @@ func (pn *ParentNode) Prepend(nodes ...Node) {
 // or group of selectors. If no matches are found,
 // null is returned.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
-func (d *Document) QuerySelector(selector string) {
+func (pn *ParentNode) QuerySelector(selector string) {
 	// TODO func (d *Document) QuerySelector(selector string)
 }
 
@@ -67,6 +67,6 @@ func (d *Document) QuerySelector(selector string) {
 // representing a list of the document's elements that
 // match the specified group of selectors.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll
-func (d *Document) QuerySelectorAll(selector string) {
+func (pn *ParentNode) QuerySelectorAll(selector string) {
 	// TODO func (d *Document) QuerySelectorAll(selector string)
 }
