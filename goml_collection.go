@@ -10,8 +10,11 @@ type GOMLCollection struct {
 // Item return the element at the given index
 // of the collection.
 // https://dom.spec.whatwg.org/#dom-htmlcollection-item
-func (c *GOMLCollection) Item(index uint) *Element {
-	return c.list[index]
+func (c *GOMLCollection) Item(index int) *Element {
+	if index >= 0 && index < c.Length() {
+		return c.list[index]
+	}
+	return nil
 }
 
 // Length method return the number of elements in
