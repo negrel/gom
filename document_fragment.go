@@ -9,8 +9,9 @@ type DocumentFragment struct {
 }
 
 // NewDocumentFragment is the public constructor
-// for the DocumentFragment class.
+// for the DocumentFragment object.
 // https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment/DocumentFragment
 func NewDocumentFragment() *DocumentFragment {
 	// TODO func NewDocumentFragment() *DocumentFragment
+	return nil
 }

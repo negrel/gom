@@ -5,14 +5,23 @@ import (
 	"io"
 )
 
-// GOMError is the possible error
-// returned by DOM function
+// GOMError is the possible error returned
+// by DOM function.
 // https://heycam.github.io/webidl/#idl-DOMException
-type GOMError struct {
-	error
+type GOMError interface {
+	Code() int
+	Message() string
+	Name() string
+	String() string
+	Fprint(w io.Writer)
+	Print()
+}
+
+var _ GOMError = &gomError{}
+
+type gomError struct {
 	message string
 	name    string
-	code    int
 }
 
 // GOMError code list
@@ -55,41 +64,41 @@ var errCode = map[string]int{
 	"ErrDataClone":             ErrDataClone,
 }
 
-func newGOMError(message string, name string) *GOMError {
-	return &GOMError{
+func newGOMError(message string, name string) GOMError {
+	return &gomError{
 		message: message,
 		name:    name,
 	}
 }
 
 // Code method return the error code
-func (e *GOMError) Code() int {
+func (e *gomError) Code() int {
 	return errCode[e.name]
-}
-
-// Message method return the error message
-func (e *GOMError) Message() string {
-	return e.message
-}
-
-// Name method return the error name
-func (e *GOMError) Name() string {
-	return e.name
-}
-
-// String method return the formatted string
-// error
-func (e *GOMError) String() string {
-	return fmt.Sprintf("[%v] - %v", e.Code(), e.Message())
-}
-
-// Print the GOM Error
-func (e *GOMError) Print() {
-	fmt.Print(e.String())
 }
 
 // Fprint method print the error to the given
 // writer
-func (e *GOMError) Fprint(w io.Writer) {
+func (e *gomError) Fprint(w io.Writer) {
 	fmt.Fprint(w, e.String())
+}
+
+// Message method return the error message
+func (e *gomError) Message() string {
+	return e.message
+}
+
+// Name method return the error name
+func (e *gomError) Name() string {
+	return e.name
+}
+
+// Print the GOM Error
+func (e *gomError) Print() {
+	fmt.Print(e.String())
+}
+
+// String method return the formatted string
+// error
+func (e *gomError) String() string {
+	return fmt.Sprintf("[%v] - %v", e.Code(), e.Message())
 }

@@ -146,7 +146,7 @@ func (n *node) NodeType() int {
 func (n *node) OwnerDocument() Document {
 	// TODO func (n *node) OwnerDocument() Document
 	// https://developer.mozilla.org/en-US/docs/Web/API/Node/ownerDocument
-	return newDocument()
+	return NewDocument()
 }
 
 // ParentNode method returns a node that is the

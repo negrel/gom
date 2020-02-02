@@ -4,7 +4,11 @@ package gom
 // HTMLDocument or XMLDocument. This document
 // is used for non-web document.
 type GOMLDocument struct {
-	Document
+	document
 	title      string
 	readyState bool
 }
+
+/*****************************************************
+ ********************* Methods ***********************
+ *****************************************************/
