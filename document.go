@@ -4,7 +4,7 @@ import (
 	"golang.org/x/text/encoding"
 )
 
-/* TODO Document missing props & methods :
+/* NOTE Document missing props & methods :
  * ** Props **
  * compatMode (experimental api)
  * contentType (experimental api)

@@ -4,7 +4,7 @@ import (
 	"errors"
 )
 
-/* TODO Node missing props & methods :
+/* NOTE Node missing props & methods :
  * ** Props **
  * baseURI
  * baseURIObject
