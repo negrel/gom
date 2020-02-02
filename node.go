@@ -49,7 +49,7 @@ const (
 
 func newNode() *Node {
 	return &Node{
-		childNodes:    &NodeList{},
+		childNodes:    newNodeList(),
 		isConnected:   false,
 		nodeType:      0,
 		parentNode:    nil,

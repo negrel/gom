@@ -5,6 +5,10 @@ type NodeList struct {
 	list []*Node
 }
 
+func newNodeList() *NodeList {
+	return &NodeList{}
+}
+
 func (nl *NodeList) append(node Node) *Node {
 	var child = &node
 	nl.list = append(nl.list, child)
