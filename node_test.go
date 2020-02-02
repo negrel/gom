@@ -278,7 +278,7 @@ func TestRemoveChild(t *testing.T) {
 
 	// Checking that child parent is
 	// not the same as node
-	if same := child.ParentNode().IsSameNode(node); same {
+	if same := node.IsSameNode(child.ParentNode()); same {
 		t.Log("Child parent must not be node anymore.")
 		t.Logf("Child parent node pointer address : %p", child.ParentNode())
 		t.Logf("Node pointer address              : %p", node)
