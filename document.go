@@ -51,6 +51,17 @@ import (
 // https://developer.mozilla.org/en-US/docs/Web/API/Document
 // https://dom.spec.whatwg.org/#document
 type Document interface {
+	Node
+	/* GETTERS & SETTERS (props) */
+	Body() Node
+	CharacterSet() encoding.Encoding
+	DocType() DocumentType
+	DocumentElement() Element
+	Head() Node
+	Hidden() bool
+	SetBody(Node)
+	SetCharacterSet(encoding.Encoding)
+	/* METHODS */
 	AdoptNode(Node)
 	CreateAttribute() Node
 	CreateComment() Node
@@ -72,8 +83,8 @@ type document struct {
 	body            Node
 	characterSet    encoding.Encoding
 	docType         DocumentType
-	documentElement Element
-	head            Element
+	documentElement element
+	head            element
 	hidden          bool
 	visibilityState string
 }
@@ -81,7 +92,40 @@ type document struct {
 // NewDocument return a new document object serving
 // as an entry point into the page's content.
 func NewDocument() Document {
-	return &document{}
+	return &document{
+		newNode(),
+	}
+}
+
+/*****************************************************
+ **************** Getters & Setters ******************
+ *****************************************************/
+
+// Body return the <body> element of the current document
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/body
+func (d *document) Body() Node {
+	return d.body
+}
+
+// CharacterSet return the current character set used by
+// the document.
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/characterSet
+func (d *document) CharacterSet() encoding.Encoding {
+	return d.characterSet
+}
+
+// DocType returns the Document Type Declaration (DTD)
+// associated with current document.
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/doctype
+func (d *document) DocType() DocumentType {
+	return &d.docType
+}
+
+// DocumentElement returns the Element that is the root
+// element of the document.
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/documentElement
+func (d *document) DocumentElement() Element {
+	return &d.documentElement
 }
 
 /*****************************************************
