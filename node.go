@@ -21,7 +21,7 @@ import ()
 // https://developer.mozilla.org/en-US/docs/Web/API/Node
 // https://dom.spec.whatwg.org/#node
 type Node interface {
-	/* GETTERS & SETTERS */
+	/* GETTERS & SETTERS (props) */
 	ChildNodes() NodeList            // Getter
 	FirstChild() Node                // Getter
 	LastChild() Node                 // Getter

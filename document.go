@@ -80,7 +80,7 @@ type document struct {
 
 // NewDocument return a new document object serving
 // as an entry point into the page's content.
-func NewDocument() *document {
+func NewDocument() Document {
 	return &document{}
 }
 
