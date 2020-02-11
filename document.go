@@ -169,7 +169,18 @@ func (d *document) SetCharacterSet(charSet encoding.Encoding) {
 // into the document on which the method was called.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/adoptNode
 func (d *document) AdoptNode(external Node) {
-	// TODO func (d *document) AdoptNode(external Node)
+	// If external node have a parent
+	if extParent := external.ParentNode(); extParent != nil {
+		// Removing the child from the parent
+		external, _ = extParent.RemoveChild(external)
+	}
+
+	// Adopting the node
+	d.AppendChild(external)
+	// Changing ownerDocument of the child and subchild...
+	d.apply(func(node Node) {
+		node.setDocument(d)
+	})
 }
 
 // CreateAttribute method creates a new attribute node,
