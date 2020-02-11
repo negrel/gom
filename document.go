@@ -83,8 +83,8 @@ type document struct {
 	body            Node
 	characterSet    encoding.Encoding
 	docType         *DocumentType
-	documentElement element
-	head            element
+	documentElement *element
+	head            *element
 	hidden          bool
 	visibilityState string
 }
@@ -93,7 +93,7 @@ type document struct {
 // as an entry point into the page's content.
 func NewDocument(name string) Document {
 	return &document{
-		newNode(),
+		node{},
 		newNode(),
 		nil,
 		newDocumentType(name),
@@ -132,7 +132,7 @@ func (d *document) DocType() DocumentType {
 // element of the document.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/documentElement
 func (d *document) DocumentElement() Element {
-	return &d.documentElement
+	return d.documentElement
 }
 
 // Head return the <head> element of the current document
