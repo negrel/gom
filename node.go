@@ -22,6 +22,7 @@ import ()
 // https://dom.spec.whatwg.org/#node
 type Node interface {
 	/* GETTERS & SETTERS (props) */
+	apply(func(self Node))           // Setter (private)
 	ChildNodes() NodeList            // Getter
 	FirstChild() Node                // Getter
 	LastChild() Node                 // Getter
@@ -33,6 +34,7 @@ type Node interface {
 	ParentElement() Element          // Getter
 	PreviousSibling() Node           // Getter
 	TextContent() string             // Getter
+	SetOwnerDocument(doc Document)   // Setter (private)
 	setNodeType(nType int)           // Setter (private)
 	setParentElement(parent Element) // Setter (private)
 	setParentNode(parent Node)       // Setter (private)
@@ -60,6 +62,7 @@ type node struct {
 	nodeType      int
 	parentNode    Node
 	parentElement Element
+	document      Document
 }
 
 // The CompaerDocumentPosition return values
@@ -90,12 +93,24 @@ func newNode() Node {
 		nodeType:      0,
 		parentNode:    nil,
 		parentElement: nil,
+		document:      nil,
 	}
 }
 
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+
+// apply the function to the node and all is descendant.
+func (n *node) apply(fn func(node Node)) {
+	// apply to the node itself
+	fn(n)
+
+	// apply to all the children
+	n.childNodes.ForEach(func(_, child Node) {
+		child.apply(fn)
+	})
+}
 
 // ChildNodes return a node list containing
 func (n *node) ChildNodes() NodeList {
@@ -174,6 +189,10 @@ func (n *node) TextContent() string {
 	// TODO func (n *node) TextContent() string
 	// https://dom.spec.whatwg.org/#dom-node-textcontent
 	return ""
+}
+
+func (n *node) SetOwnerDocument(doc Document) {
+	n.document = doc
 }
 
 func (n *node) setNodeType(nType int) {
