@@ -57,7 +57,7 @@ type Document interface {
 	CharacterSet() encoding.Encoding
 	DocType() DocumentType
 	DocumentElement() Element
-	Head() Node
+	Head() Element
 	Hidden() bool
 	SetBody(Node)
 	SetCharacterSet(encoding.Encoding)
@@ -82,7 +82,7 @@ type document struct {
 	node
 	body            Node
 	characterSet    encoding.Encoding
-	docType         DocumentType
+	docType         *DocumentType
 	documentElement element
 	head            element
 	hidden          bool
@@ -91,9 +91,16 @@ type document struct {
 
 // NewDocument return a new document object serving
 // as an entry point into the page's content.
-func NewDocument() Document {
+func NewDocument(name string) Document {
 	return &document{
 		newNode(),
+		newNode(),
+		nil,
+		newDocumentType(name),
+		nil, // TODO change for real documentElement
+		nil, // TODO change for real head element
+		false,
+		"visible",
 	}
 }
 
@@ -118,7 +125,7 @@ func (d *document) CharacterSet() encoding.Encoding {
 // associated with current document.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/doctype
 func (d *document) DocType() DocumentType {
-	return &d.docType
+	return *d.docType
 }
 
 // DocumentElement returns the Element that is the root
@@ -126,6 +133,32 @@ func (d *document) DocType() DocumentType {
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/documentElement
 func (d *document) DocumentElement() Element {
 	return &d.documentElement
+}
+
+// Head return the <head> element of the current document
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/head
+func (d *document) Head() Element {
+	return d.head
+}
+
+// Hidden returns a Boolean value indicating if the page
+// is considered hidden or not.
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/hidden
+func (d *document) Hidden() bool {
+	return d.hidden
+}
+
+// SetBody set the body node of the document.
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/body
+func (d *document) SetBody(body Node) {
+	d.body = body
+}
+
+// SetCharacterSet method set the document character
+// set (UTF-8).
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/characterSet
+func (d *document) SetCharacterSet(charSet encoding.Encoding) {
+	d.characterSet = charSet
 }
 
 /*****************************************************
