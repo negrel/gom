@@ -179,7 +179,7 @@ func (d *document) AdoptNode(external Node) {
 	d.AppendChild(external)
 	// Changing ownerDocument of the child and subchild...
 	d.apply(func(node Node) {
-		node.setDocument(d)
+		node.SetOwnerDocument(d)
 	})
 }
 
