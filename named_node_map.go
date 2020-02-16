@@ -9,6 +9,57 @@ type NamedNodeMap interface {
 	Length() int
 	/* METHODS */
 	GetNamedItem(string) Attr
-	SetNamedItem(string) Attr
-	RemoveNamedItem(string)
+	SetNamedItem(string, string) Attr
+	RemoveNamedItem(string) Attr
+}
+
+var _ NamedNodeMap = &namedNodeMap{}
+
+type namedNodeMap struct {
+	list map[string]*attr
+}
+
+/*****************************************************
+ **************** Getters & Setters ******************
+ *****************************************************/
+
+func (n *namedNodeMap) Length() int {
+	return len(n.list)
+}
+
+/*****************************************************
+ ********************* Methods ***********************
+ *****************************************************/
+
+// GetNamedItem return the attribute corresponding to
+// the given name.
+func (n *namedNodeMap) GetNamedItem(name string) Attr {
+	return n.list[name]
+}
+
+// SetNamedItem replace or adds the specified attribute
+// with the given value.
+func (n *namedNodeMap) SetNamedItem(name, value string) Attr {
+	// Get the old attribute
+	old := *n.list[name]
+
+	// Set the new attribute value
+	n.list[name] = value
+
+	// Return the old
+	return &old
+}
+
+// RemoveNamedItem remove the specified attribute.
+func (n *namedNodeMap) RemoveNamedItem(name string) (Attr, GOMError) {
+	attr := *n.list[name]
+
+	// Check if attribute exist
+	if attr == nil {
+		return nil, newGOMError("The attr to be removed is not part of this element", "ErrNotFound")
+	}
+
+	delete(n.list, name)
+
+	return &attr, nil
 }
