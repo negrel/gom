@@ -1,5 +1,9 @@
 package gom
 
+import (
+	"strings"
+)
+
 /* NOTE Element missing props & methods (OFFICIAL DOM) :
  * ** Props **
  * clientLeft
@@ -65,7 +69,9 @@ type Element interface {
 var _ Element = &element{}
 
 type element struct {
-	// TODO element struct
+	attributes NamedNodeMap
+	classList  []*string
+	tagName    string
 }
 
 /*****************************************************
@@ -76,20 +82,20 @@ type element struct {
 // attribute nodes registered to the specified node.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/attributes
 func (e *element) Attributes() NamedNodeMap {
-	// TODO func (e *element) Attributes() NamedNodeMap
+	return e.attributes
 }
 
 // ClassList return a live string collection of the
 // class attributes element.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/attributehttps://developer.mozilla.org/en-US/docs/Web/API/Element/classList
-func (e *element) ClassList() []string {
-	// TODO func (e *element) ClassList() []string
+func (e *element) ClassList() (list []string) {
+	return e.classList
 }
 
 // ClassName return the class attribute as a string.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/className
 func (e *element) ClassName() string {
-	// TODO func (e *element) ClassName() string
+	return strings.Join(e.classList, " ")
 }
 
 // ClientHeight return the inner height of an element
@@ -201,7 +207,8 @@ func (e *element) SetScrollLeft(int) {
 // it's called.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName
 func (e *element) TagName() string {
-	// TODO func (e *element) TagName() string
+	// elements is not instanciable
+	return nil
 }
 
 /*****************************************************
