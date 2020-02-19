@@ -10,6 +10,7 @@ import (
  * clientTop
  * computedName
  * computedRole
+ * localName
  * namespaceURI
  * part
  * prefix
@@ -39,7 +40,6 @@ type Element interface {
 	ClientWidth() int
 	Id() *string
 	InnerGOML() string
-	LocalName() string
 	OuterGOML() string
 	ScrollHeight() int
 	ScrollLeft() int
@@ -54,6 +54,8 @@ type Element interface {
 	/* METHODS */
 	GetAttribute(string) Attr
 	GetAttributeNames() []string
+	GetBoundingClientRect() GOMRect
+	GetClientRects() []GOMRect
 	GetElementsByClassName(string) GOMLCollection
 	GetElementsByTagName(string) GOMLCollection
 	HasAttribute(string) bool
@@ -68,8 +70,10 @@ type Element interface {
 }
 
 var _ Element = &element{}
+var _ Node = &element{}
 
 type element struct {
+	node
 	attributes NamedNodeMap
 	classList  []*string
 	tagName    string
@@ -103,14 +107,14 @@ func (e *element) ClassName() string {
 // in pixels. It includes padding but excludes margins.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/clientWidth
 func (e *element) ClientHeight() int {
-	// TODO func (e *element) ClientHeight() int
+	return 0
 }
 
 // ClientWidth return the inner width of an element
 // in pixels. It includes padding but excludes margins.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/clientWidth
 func (e *element) ClientWidth() int {
-	// TODO func (e *element) ClientWidth() int
+	return 0
 }
 
 // Id return the id property of the element.
@@ -126,13 +130,6 @@ func (e *element) InnerGOML() string {
 	// TODO func (e *element) InnerGOML() *string
 }
 
-// LocalName return the local part of the qualified name of
-// an element.
-// https://developer.mozilla.org/en-US/docs/Web/API/Element/localName
-func (e *element) LocalName() string {
-	// TODO func (e *element) LocalName() string
-}
-
 // OuterGOML return the serialized GOML fragment describing
 // the element including its descendants.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML
@@ -144,36 +141,40 @@ func (e *element) OuterGOML() string {
 // content, including content not visible on the screen due to
 // overflow.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
-func (e *element) ScrollHeight() int {
-	// TODO func (e *element) ScrollHeight() int
+func (e *element) ScrollHeight() (sh int) {
+
+	return sh
 }
 
 // ScrollLeft return the number of pixels that an element's
 // content is scrolled from its left edge.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft
-func (e *element) ScrollLeft() int {
-	// TODO func (e *element) ScrollLeft() int
+func (e *element) ScrollLeft() (sl int) {
+
+	return sl
 }
 
 // ScrollTop return the number of pixels that an element's
 // content is scrolled vertically.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop
-func (e *element) ScrollTop() int {
-	// TODO func (e *element) ScrollTop() int
+func (e *element) ScrollTop() (st int) {
+
+	return st
 }
 
 // ScrollWidth is a measurement of the width of an element's
 // content, including content not visible on the screen due
 // to overflow.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollWidth
-func (e *element) ScrollWidth() int {
-	// TODO func (e *element) ScrollWidth() int
+func (e *element) ScrollWidth() (sw int) {
+
+	return sw
 }
 
 // SetClassName set the class attribute of the element.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/className
-func (e *element) SetClassName(string) {
-	// TODO func (e *element) SetClassName(string)
+func (e *element) SetClassName(className string) {
+	e.classList = strings.Split(className, ' ')
 }
 
 // SetInnerGOML set the GOML markup contained within
@@ -194,14 +195,18 @@ func (e *element) SetOuterGOML(string) {
 // the document is scrolled vertically.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop
 func (e *element) SetScrollTop(int) {
-	// TODO func (e *element) SetScrollTop(int)
+	if e.isScrollable() {
+
+	}
 }
 
 // SetScrollLeft set the number of pixels the top of
 // the document is scrolled horizontally.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft
 func (e *element) SetScrollLeft(int) {
-	// TODO func (e *element) SetScrollLeft(int)
+	if e.isScrollable() {
+
+	}
 }
 
 // TagName returns the tag name of the element on which
@@ -220,14 +225,36 @@ func (e *element) TagName() string {
 // on the element.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute
 func (e *element) GetAttribute(attrName string) Attr {
-	// TODO func (e *element) GetAttribute(string) Attr
+	return e.Attributes.GetNamedItem(attrName)
 }
 
 // GetAttributeNames returns an array of attribute names
 // from the current element.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttributeName
 func (e *element) GetAttributeNames() []string {
-	// TODO func (e *element) GetAttributeName() []string
+	attrNames = make([]string, e.attributes.Length())
+
+	for i := range e.attributes.dict {
+		attrNames = append(attrName, i)
+	}
+
+	return attrName
+}
+
+// GetBoundingClientRect method returns the size of an
+// element and its position relative to the viewport.
+// https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+func (e *element) GetBoundingClientRect() GOMRect {
+	// TODO (e *element) GetBoundingClientRect() GOMRect
+	return &gomRect{}
+}
+
+// GetClientRect method returns the size of an
+// element and its position relative to the viewport.
+// https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+func (e *element) GetClientRects() []GOMRect {
+	// TODO (e *element) GetClientRects() []GOMRect
+	return make([]GOMRect, 0)
 }
 
 // GetElementsByClassName returns a live GOMLCollection which
@@ -250,7 +277,8 @@ func (e *element) GetElementsByTagName(tagName string) GOMLCollection {
 // or not.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/hasAttribute
 func (e *element) HasAttribute(name string) bool {
-	// TODO func (e *element) HasAttribute() bool
+	_, has := e.attributes.getNamedItem(name)
+	return has
 }
 
 // QuerySelector method returns the first element that is
