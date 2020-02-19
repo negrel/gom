@@ -5,9 +5,11 @@ package gom
 // https://developer.mozilla.org/en-US/docs/Web/API/Attr
 // https://dom.spec.whatwg.org/#attr
 type Attr interface {
+	/* GETTERS & SETTERS (props) */
 	Name() string
 	OwnerElement() Element
 	Value() string
+	SetValue(string)
 }
 
 type attr struct {
@@ -30,4 +32,9 @@ func (a *attr) OwnerElement() Element {
 // Value return the attribute value of an element
 func (a *attr) Value() string {
 	return a.value
+}
+
+// SetValue set the attribute value of an element
+func (a *attr) SetValue(value string) {
+	a.value = value
 }
