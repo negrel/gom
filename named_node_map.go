@@ -10,7 +10,7 @@ type NamedNodeMap interface {
 	/* METHODS */
 	GetNamedItem(string) Attr
 	SetNamedItem(string, string) Attr
-	RemoveNamedItem(string) Attr
+	RemoveNamedItem(string) (Attr, GOMError)
 }
 
 var _ NamedNodeMap = &namedNodeMap{}
@@ -44,7 +44,7 @@ func (n *namedNodeMap) SetNamedItem(name, value string) Attr {
 	old := *n.list[name]
 
 	// Set the new attribute value
-	n.list[name] = value
+	n.list[name].SetValue(value)
 
 	// Return the old
 	return &old
@@ -52,10 +52,11 @@ func (n *namedNodeMap) SetNamedItem(name, value string) Attr {
 
 // RemoveNamedItem remove the specified attribute.
 func (n *namedNodeMap) RemoveNamedItem(name string) (Attr, GOMError) {
-	attr := *n.list[name]
+	ptrAttr := n.list[name]
+	attr := *ptrAttr
 
 	// Check if attribute exist
-	if attr == nil {
+	if ptrAttr == nil {
 		return nil, newGOMError("The attr to be removed is not part of this element", "ErrNotFound")
 	}
 
