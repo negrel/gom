@@ -19,11 +19,12 @@ type NamedNodeMap interface {
 var _ NamedNodeMap = &namedNodeMap{}
 
 type namedNodeMap struct {
-	list map[string]*attr
+	dict map[string]*attr
+	arr  NodeList
 }
 
 func (n *namedNodeMap) getNamedItem(name string) (Attr, bool) {
-	attr, ok := n.list[name]
+	attr, ok := n.dict[name]
 	return attr, ok
 }
 
@@ -32,7 +33,7 @@ func (n *namedNodeMap) getNamedItem(name string) (Attr, bool) {
  *****************************************************/
 
 func (n *namedNodeMap) Length() int {
-	return len(n.list)
+	return len(n.dict)
 }
 
 /*****************************************************
@@ -42,25 +43,25 @@ func (n *namedNodeMap) Length() int {
 // GetNamedItem return the attribute corresponding to
 // the given name.
 func (n *namedNodeMap) GetNamedItem(name string) Attr {
-	return n.list[name]
+	return n.dict[name]
 }
 
 // Item returns the Attr at the given index, or null if
 // the index is higher or equal to the number of nodes.
-func (n *namedNodeMap) Item() Attr {
-
+func (n *namedNodeMap) Item(index int) Attr {
+	return n.arr.Item(index)
 }
 
 // SetNamedItem Replaces, or adds, the Attr identified
 // in the map by the given name.
 func (n *namedNodeMap) SetNamedItem(attr Attr) {
 	// Set the new attribute value
-	n.list[old.Name] = attr
+	n.dict[attr.Name()] = attr
 }
 
 // RemoveNamedItem remove the specified attribute.
 func (n *namedNodeMap) RemoveNamedItem(name string) (Attr, GOMError) {
-	ptrAttr := n.list[name]
+	ptrAttr := n.dict[name]
 	attr := *ptrAttr
 
 	// Check if attribute exist
@@ -68,7 +69,7 @@ func (n *namedNodeMap) RemoveNamedItem(name string) (Attr, GOMError) {
 		return nil, newGOMError("The attr to be removed is not part of this element", "ErrNotFound")
 	}
 
-	delete(n.list, name)
+	delete(n.dict, name)
 
 	return &attr, nil
 }
