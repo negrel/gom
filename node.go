@@ -21,24 +21,25 @@ import ()
 // https://developer.mozilla.org/en-US/docs/Web/API/Node
 // https://dom.spec.whatwg.org/#node
 type Node interface {
+	/* Private */
+	apply(func(self Node))
+	setNodeType(nType int)
+	setParentElement(parent Element)
+	setParentNode(parent Node)
 	/* GETTERS & SETTERS (props) */
-	apply(func(self Node))           // Setter (private)
-	ChildNodes() NodeList            // Getter
-	FirstChild() Node                // Getter
-	LastChild() Node                 // Getter
-	NextSibling() Node               // Getter
-	NodeName() string                // Getter
-	NodeType() int                   // Getter
-	OwnerDocument() Document         // Getter
-	ParentNode() Node                // Getter
-	ParentElement() Element          // Getter
-	PreviousSibling() Node           // Getter
-	TextContent() string             // Getter
-	SetOwnerDocument(doc Document)   // Setter (private)
-	setNodeType(nType int)           // Setter (private)
-	setParentElement(parent Element) // Setter (private)
-	setParentNode(parent Node)       // Setter (private)
-	SetTextContent(content string)   // Setter
+	ChildNodes() NodeList
+	FirstChild() Node
+	LastChild() Node
+	NextSibling() Node
+	NodeName() string
+	NodeType() int
+	OwnerDocument() Document
+	ParentNode() Node
+	ParentElement() Element
+	PreviousSibling() Node
+	TextContent() string
+	SetOwnerDocument(doc Document)
+	SetTextContent(content string)
 	/* METHODS */
 	AppendChild(child Node) Node
 	CloneNode(deep bool) Node
@@ -151,8 +152,6 @@ func (n *node) NodeName() string {
 // what the node is.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
 func (n *node) NodeType() int {
-	// TODO func (n *node) NodeName() string
-	// https://dom.spec.whatwg.org/#dom-node-nodetype
 	return n.nodeType
 }
 
