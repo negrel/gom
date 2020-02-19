@@ -1,5 +1,9 @@
 package gom
 
+import (
+	"strings"
+)
+
 // Attr interface represents one of a DOM element's
 // attributes as an object.
 // https://developer.mozilla.org/en-US/docs/Web/API/Attr
@@ -12,7 +16,11 @@ type Attr interface {
 	SetValue(string)
 }
 
+var _ Attr = &attr{}
+var _ Node = &attr{}
+
 type attr struct {
+	node
 	name         string
 	ownerElement Element
 	value        string
@@ -20,7 +28,7 @@ type attr struct {
 
 func createAttribute(name string) Attr {
 	return &attr{
-		name:         name,
+		name:         strings.ToLower(name),
 		ownerElement: nil,
 		value:        "",
 	}
