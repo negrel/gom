@@ -5,10 +5,13 @@ package gom
 // https://developer.mozilla.org/en-US/docs/Web/API/NamedNodeMap
 // https://dom.spec.whatwg.org/#interface-namednodemap
 type NamedNodeMap interface {
+	/* Private */
+	getNamedItem(string) (Attr, bool)
 	/* GETTERS & SETTERS (props) */
 	Length() int
 	/* METHODS */
 	GetNamedItem(string) Attr
+	Item(int) Attr
 	SetNamedItem(Attr)
 	RemoveNamedItem(string) (Attr, GOMError)
 }
@@ -17,6 +20,11 @@ var _ NamedNodeMap = &namedNodeMap{}
 
 type namedNodeMap struct {
 	list map[string]*attr
+}
+
+func (n *namedNodeMap) getNamedItem(name string) (Attr, bool) {
+	attr, ok := n.list[name]
+	return attr, ok
 }
 
 /*****************************************************
@@ -35,6 +43,12 @@ func (n *namedNodeMap) Length() int {
 // the given name.
 func (n *namedNodeMap) GetNamedItem(name string) Attr {
 	return n.list[name]
+}
+
+// Item returns the Attr at the given index, or null if
+// the index is higher or equal to the number of nodes.
+func (n *namedNodeMap) Item() Attr {
+
 }
 
 // SetNamedItem Replaces, or adds, the Attr identified

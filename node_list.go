@@ -5,15 +5,16 @@ import ()
 // NodeList objects are collections of nodes (live)
 // https://developer.mozilla.org/en-US/docs/Web/API/NodeList
 type NodeList interface {
+	/* Private */
+	append(node Node) Node
+	appendList(nodes ...Node)
+	set(index int, node Node)
 	/* GETTERS & SETTERS */
 	Length() int
 	/* METHODS */
-	append(node Node) Node    // private
-	appendList(nodes ...Node) // private
 	ForEach(func(i int, c Node))
 	IndexOf(n Node) int
 	Item(index int) Node
-	set(index int, node Node) // private
 	Values() []Node
 }
 
@@ -25,6 +26,20 @@ type nodeList struct {
 
 func newNodeList() *nodeList {
 	return &nodeList{}
+}
+
+func (nl *nodeList) append(node Node) Node {
+	var child = node
+	nl.list = append(nl.list, child)
+	return child
+}
+
+func (nl *nodeList) appendList(nodes ...Node) {
+	nl.list = append(nl.list, nodes...)
+}
+
+func (nl *nodeList) set(index int, node Node) {
+	nl.list[index] = node
 }
 
 /*****************************************************
@@ -39,16 +54,6 @@ func (nl *nodeList) Length() int {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
-
-func (nl *nodeList) append(node Node) Node {
-	var child = node
-	nl.list = append(nl.list, child)
-	return child
-}
-
-func (nl *nodeList) appendList(nodes ...Node) {
-	nl.list = append(nl.list, nodes...)
-}
 
 // ForEach apply the given function for each of
 // the Node in the list.
@@ -76,10 +81,6 @@ func (nl *nodeList) Item(index int) Node {
 		return nl.Values()[index]
 	}
 	return nil
-}
-
-func (nl *nodeList) set(index int, node Node) {
-	nl.list[index] = node
 }
 
 // Values method returns an iterator allowing to go

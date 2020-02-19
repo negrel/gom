@@ -98,10 +98,6 @@ func newNode() Node {
 	}
 }
 
-/*****************************************************
- **************** Getters & Setters ******************
- *****************************************************/
-
 // apply the function to the node and all is descendant.
 func (n *node) apply(fn func(node Node)) {
 	// apply to the node itself
@@ -112,6 +108,22 @@ func (n *node) apply(fn func(node Node)) {
 		child.apply(fn)
 	})
 }
+
+func (n *node) setNodeType(nType int) {
+	n.nodeType = nType
+}
+
+func (n *node) setParentElement(parent Element) {
+	n.parentElement = parent
+}
+
+func (n *node) setParentNode(parent Node) {
+	n.parentNode = parent
+}
+
+/*****************************************************
+ **************** Getters & Setters ******************
+ *****************************************************/
 
 // ChildNodes return a node list containing
 func (n *node) ChildNodes() NodeList {
@@ -192,18 +204,6 @@ func (n *node) TextContent() string {
 
 func (n *node) SetOwnerDocument(doc Document) {
 	n.document = doc
-}
-
-func (n *node) setNodeType(nType int) {
-	n.nodeType = nType
-}
-
-func (n *node) setParentElement(parent Element) {
-	n.parentElement = parent
-}
-
-func (n *node) setParentNode(parent Node) {
-	n.parentNode = parent
 }
 
 // SetTextContent methode set the textual content
