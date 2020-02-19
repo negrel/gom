@@ -18,6 +18,18 @@ type attr struct {
 	value        string
 }
 
+func createAttribute(name string) Attr {
+	return &attr{
+		name:         name,
+		ownerElement: nil,
+		value:        "",
+	}
+}
+
+/*****************************************************
+ **************** Getters & Setters ******************
+ *****************************************************/
+
 // Name return the attribute name of an element
 // https://developer.mozilla.org/en-US/docs/Web/API/Attr/localName
 func (a *attr) Name() string {

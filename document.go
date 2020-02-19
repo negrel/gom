@@ -63,7 +63,7 @@ type Document interface {
 	SetCharacterSet(encoding.Encoding)
 	/* METHODS */
 	AdoptNode(Node)
-	CreateAttribute() Node
+	CreateAttribute(string) Attr
 	CreateComment() Node
 	CreateDocumentFragment() Node
 	CreateElement() Node
@@ -186,8 +186,8 @@ func (d *document) AdoptNode(external Node) {
 // CreateAttribute method creates a new attribute node,
 // and returns it.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/createAttribute
-func (d *document) CreateAttribute() Node {
-	// TODO func (d *document) CreateAttribute() Node
+func (d *document) CreateAttribute(name string) Attr {
+	return createAttribute(name)
 }
 
 // CreateComment creates a new comment node, and
