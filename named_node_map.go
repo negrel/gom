@@ -9,7 +9,7 @@ type NamedNodeMap interface {
 	Length() int
 	/* METHODS */
 	GetNamedItem(string) Attr
-	SetNamedItem(string, string) Attr
+	SetNamedItem(Attr)
 	RemoveNamedItem(string) (Attr, GOMError)
 }
 
@@ -37,17 +37,11 @@ func (n *namedNodeMap) GetNamedItem(name string) Attr {
 	return n.list[name]
 }
 
-// SetNamedItem replace or adds the specified attribute
-// with the given value.
-func (n *namedNodeMap) SetNamedItem(name, value string) Attr {
-	// Get the old attribute
-	old := *n.list[name]
-
+// SetNamedItem Replaces, or adds, the Attr identified
+// in the map by the given name.
+func (n *namedNodeMap) SetNamedItem(attr Attr) {
 	// Set the new attribute value
-	n.list[name].SetValue(value)
-
-	// Return the old
-	return &old
+	n.list[old.Name] = attr
 }
 
 // RemoveNamedItem remove the specified attribute.
