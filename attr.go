@@ -9,6 +9,8 @@ import (
 // https://developer.mozilla.org/en-US/docs/Web/API/Attr
 // https://dom.spec.whatwg.org/#attr
 type Attr interface {
+	/* EMBEDDED INTERFACE */
+	Node
 	/* GETTERS & SETTERS (props) */
 	Name() string
 	OwnerElement() Element
@@ -20,7 +22,7 @@ var _ Attr = &attr{}
 var _ Node = &attr{}
 
 type attr struct {
-	node
+	*node
 	name         string
 	ownerElement Element
 	value        string
@@ -28,10 +30,70 @@ type attr struct {
 
 func createAttribute(name string) Attr {
 	return &attr{
+		node:         &node{},
 		name:         strings.ToLower(name),
 		ownerElement: nil,
 		value:        "",
 	}
+}
+
+/*****************************************************
+ **************** Embedded interface *****************
+ *****************************************************/
+
+/* Node */
+/* - Props */
+
+func (a *attr) NodeName() string {
+	return a.Name()
+}
+
+// NodeType return the "AttributeNode" type.
+func (a *attr) NodeType() NodeType {
+	return AttributeNode
+}
+
+/* - Methods */
+
+// CloneNode return a clone of the Attr
+func (a *attr) CloneNode(_ bool) Node {
+	clone := createAttribute(a.name)
+
+	clone.SetValue(a.value)
+
+	return clone
+}
+
+// IsEqualNode return wether or not two Attr are equal
+func (a *attr) IsEqualNode(other Node) bool {
+	if other == nil {
+		goto notEqual
+	}
+
+	// Checking NodeType
+	if a.NodeType() != other.NodeType() {
+		goto notEqual
+	}
+
+	// Type switch
+	switch otherAttr := other.(type) {
+	case Attr:
+		if a.Name() != otherAttr.Name() {
+			goto notEqual
+		}
+
+		if a.Value() != otherAttr.Value() {
+			goto notEqual
+		}
+
+	default:
+		goto notEqual
+	}
+
+	return true
+
+notEqual:
+	return false
 }
 
 /*****************************************************
@@ -58,3 +120,7 @@ func (a *attr) Value() string {
 func (a *attr) SetValue(value string) {
 	a.value = value
 }
+
+/*****************************************************
+ ********************* Methods ***********************
+ *****************************************************/

@@ -32,13 +32,15 @@ import (
 // https://developer.mozilla.org/en-US/docs/Web/API/Element
 // https://dom.spec.whatwg.org/#interface-element
 type Element interface {
+	/* EMBEDDED INTERFACE */
+	Node
 	/* GETTERS & SETTERS (props) */
 	Attributes() NamedNodeMap
 	ClassList() []string
 	ClassName() string
 	ClientHeight() int
 	ClientWidth() int
-	Id() *string
+	Id() Attr
 	InnerGOML() string
 	OuterGOML() string
 	ScrollHeight() int
@@ -73,10 +75,103 @@ var _ Element = &element{}
 var _ Node = &element{}
 
 type element struct {
-	node
+	*node
 	attributes NamedNodeMap
-	classList  []*string
+	classList  []string
 	tagName    string
+	id         Attr
+}
+
+func createElement(tagName string) Element {
+	return &element{
+		tagName: tagName,
+	}
+}
+
+/*****************************************************
+ **************** Embedded interface *****************
+ *****************************************************/
+
+/* Node */
+/* - Props */
+
+// NodeName return the GOML-uppercased name
+func (e *element) NodeName() string {
+	return strings.ToUpper(e.TagName())
+}
+
+// NodeType return the "ElementNode" type.
+func (e *element) NodeType() NodeType {
+	return ElementNode
+}
+
+/* - Methods */
+
+// CloneNode return a clone of the element
+func (e *element) CloneNode(deep bool) Node {
+	clone := createElement(e.tagName)
+
+	// Setting owner document
+	clone.SetOwnerDocument(e.document)
+
+	// Cloning all attributes
+	eAttr := e.attributes.Values()
+	for i, length := 0, e.attributes.Length(); i < length; i++ {
+		eAttrClone := eAttr[i].CloneNode(false)
+
+		clone.Attributes().SetNamedItem(eAttrClone.(Attr))
+	}
+
+	// If deep clone, cloning the children
+	if deep {
+		for _, child := range e.ChildNodes().Values() {
+			clone.AppendChild(child.CloneNode(true))
+		}
+	}
+
+	return clone
+}
+
+// IsEqualNode method return whether two Element are equal.
+func (e *element) IsEqualNode(other Node) bool {
+	if other == nil {
+		goto notEqual
+	}
+
+	// Checking NodeType
+	if e.NodeType() != other.NodeType() {
+		goto notEqual
+	}
+
+	// Type switch
+	switch otherEl := other.(type) {
+	case Element:
+		elAttrList := e.Attributes()
+		otherElAttrList := otherEl.Attributes()
+
+		// Checking attributes length
+		if elAttrList.Length() != otherElAttrList.Length() {
+			goto notEqual
+		}
+
+		otherElAttr := otherElAttrList.Values()
+		// Check all attributes
+		for i, child := range elAttrList.Values() {
+			if otherAttr := otherElAttr[i]; otherAttr != nil {
+				if !otherAttr.IsEqualNode(child) {
+					goto notEqual
+				}
+			}
+		}
+
+	default:
+		goto notEqual
+	}
+
+	return true
+
+notEqual:
+	return false
 }
 
 /*****************************************************
@@ -119,8 +214,8 @@ func (e *element) ClientWidth() int {
 
 // Id return the id property of the element.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/id
-func (e *element) Id() *string {
-	return &e.Id
+func (e *element) Id() Attr {
+	return e.id
 }
 
 // InnerGOML return the GOML markup contained within the
@@ -128,6 +223,7 @@ func (e *element) Id() *string {
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
 func (e *element) InnerGOML() string {
 	// TODO func (e *element) InnerGOML() *string
+	return ""
 }
 
 // OuterGOML return the serialized GOML fragment describing
@@ -135,6 +231,7 @@ func (e *element) InnerGOML() string {
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML
 func (e *element) OuterGOML() string {
 	// TODO func (e *element) OuterGOML() *string
+	return ""
 }
 
 // ScrollHeight is a measurement of the height of an element's
@@ -174,7 +271,7 @@ func (e *element) ScrollWidth() (sw int) {
 // SetClassName set the class attribute of the element.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/className
 func (e *element) SetClassName(className string) {
-	e.classList = strings.Split(className, ' ')
+	e.classList = strings.Split(className, " ")
 }
 
 // SetInnerGOML set the GOML markup contained within
@@ -194,27 +291,19 @@ func (e *element) SetOuterGOML(string) {
 // SetScrollTop set the number of pixels the top of
 // the document is scrolled vertically.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop
-func (e *element) SetScrollTop(int) {
-	if e.isScrollable() {
-
-	}
-}
+func (e *element) SetScrollTop(int) {}
 
 // SetScrollLeft set the number of pixels the top of
 // the document is scrolled horizontally.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft
-func (e *element) SetScrollLeft(int) {
-	if e.isScrollable() {
-
-	}
-}
+func (e *element) SetScrollLeft(int) {}
 
 // TagName returns the tag name of the element on which
 // it's called.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName
 func (e *element) TagName() string {
 	// elements is not instanciable
-	return nil
+	return ""
 }
 
 /*****************************************************
@@ -225,20 +314,21 @@ func (e *element) TagName() string {
 // on the element.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute
 func (e *element) GetAttribute(attrName string) Attr {
-	return e.Attributes.GetNamedItem(attrName)
+	attr, _ := e.attributes.getNamedItem(attrName)
+	return attr
 }
 
 // GetAttributeNames returns an array of attribute names
 // from the current element.
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttributeName
 func (e *element) GetAttributeNames() []string {
-	attrNames = make([]string, e.attributes.Length())
+	attrNames := make([]string, e.attributes.Length())
 
-	for i := range e.attributes.dict {
-		attrNames = append(attrName, i)
+	for i := 0; i < e.attributes.Length(); i++ {
+		attrNames = append(attrNames, e.attributes.Item(i).Name())
 	}
 
-	return attrName
+	return attrNames
 }
 
 // GetBoundingClientRect method returns the size of an

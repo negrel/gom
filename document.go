@@ -79,12 +79,12 @@ type Document interface {
 var _ Document = &document{}
 
 type document struct {
-	node
+	*node
 	body            Node
 	characterSet    encoding.Encoding
-	docType         *DocumentType
-	documentElement *element
-	head            *element
+	docType         DocumentType
+	documentElement Element
+	head            Element
 	hidden          bool
 	visibilityState string
 }
@@ -93,15 +93,32 @@ type document struct {
 // as an entry point into the page's content.
 func NewDocument(name string) Document {
 	return &document{
-		node{},
-		newNode(),
-		nil,
-		newDocumentType(name),
-		nil, // TODO change for real documentElement
-		nil, // TODO change for real head element
-		false,
-		"visible",
+		node:            &node{},
+		body:            newNode(),
+		characterSet:    nil,
+		docType:         newDocumentType(name),
+		documentElement: nil, // TODO change for real documentElement
+		head:            nil, // TODO change for real head element
+		hidden:          false,
+		visibilityState: "visible",
 	}
+}
+
+/*****************************************************
+ **************** Embedded interface *****************
+ *****************************************************/
+
+/* Node */
+/* - Props */
+
+// NodeName return the GOML-uppercased name
+func (d *document) NodeName() string {
+	return "#document"
+}
+
+// NodeType return the "ElementNode" type.
+func (d *document) NodeType() NodeType {
+	return DocumentNode
 }
 
 /*****************************************************
@@ -125,7 +142,7 @@ func (d *document) CharacterSet() encoding.Encoding {
 // associated with current document.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/doctype
 func (d *document) DocType() DocumentType {
-	return *d.docType
+	return d.docType
 }
 
 // DocumentElement returns the Element that is the root
@@ -207,8 +224,8 @@ func (d *document) CreateDocumentFragment() Node {
 // CreateElement creates a new comment node, and
 // returns it.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-func (d *document) CreateElement() Node {
-	// TODO func (d *document) QuerySelectorAll(selector string) NodeList
+func (d *document) CreateElement(tagName string) Node {
+	return createElement(tagName)
 }
 
 // CreateTextNode creates a new comment node, and
