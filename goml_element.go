@@ -2,6 +2,8 @@ package gom
 
 // GOMLElement interface represents any GOML element
 type GOMLElement interface {
+	/* EMBEDDED INTERFACE */
+	Element
 	/* GETTERS & SETTERS (props) */
 	Hidden() bool
 	InnerText() string
@@ -12,16 +14,18 @@ type GOMLElement interface {
 }
 
 var _ GOMLElement = &gomlElement{}
+var _ Element = &gomlElement{}
+var _ Node = &gomlElement{}
 
 type gomlElement struct {
-	element
+	*element
 }
 
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
 
-// Hidden return true if the element is hidden or not
+// Hidden return true if the element is hidden or not.
 // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/hidden
 func (e *gomlElement) Hidden() bool {
 	// TODO (e *gomlElement) Hidden() bool
