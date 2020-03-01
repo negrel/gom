@@ -1,12 +1,9 @@
 package gom
 
-import ()
-
 /* NOTE Node missing props & methods (OFFICIAL DOM) :
  * ** Props **
  * baseURI
  * baseURIObject
- * nodeName
  * all obsolete or non-standardized props
  * ** Methods **
  * isDefaultNameSpace
@@ -15,7 +12,8 @@ import ()
  */
 
 // Node is an interface and does not exist
-// as node. It is used embedded by all nodes
+// as node (abstract). It is used embedded
+// by all nodes.
 // (Document, DocumentType, Element, Text,
 // and Comment).
 // https://developer.mozilla.org/en-US/docs/Web/API/Node
@@ -23,7 +21,6 @@ import ()
 type Node interface {
 	/* Private */
 	apply(func(self Node))
-	setNodeType(nType int)
 	setParentElement(parent Element)
 	setParentNode(parent Node)
 	/* GETTERS & SETTERS (props) */
@@ -32,7 +29,7 @@ type Node interface {
 	LastChild() Node
 	NextSibling() Node
 	NodeName() string
-	NodeType() int
+	NodeType() NodeType
 	OwnerDocument() Document
 	ParentNode() Node
 	ParentElement() Element
@@ -60,13 +57,12 @@ var _ Node = &node{}
 type node struct {
 	childNodes    NodeList
 	isConnected   bool
-	nodeType      int
 	parentNode    Node
 	parentElement Element
 	document      Document
 }
 
-// The CompaerDocumentPosition return values
+// The CompareDocumentPosition return values
 // are a bitmask with the following values.
 const (
 	DocumentPositionDisconnected = 1 << iota
@@ -77,10 +73,14 @@ const (
 	DocumentPositionImplementationSpecific
 )
 
+// NodeType is the type of a Node.
+type NodeType = uint32
+
 // Node type list
 const (
 	_ = iota
 	ElementNode
+	AttributeNode
 	TextNode
 	CommentNode
 	DocumentNode
@@ -91,7 +91,6 @@ func newNode() Node {
 	return &node{
 		childNodes:    newNodeList(),
 		isConnected:   false,
-		nodeType:      0,
 		parentNode:    nil,
 		parentElement: nil,
 		document:      nil,
@@ -104,13 +103,9 @@ func (n *node) apply(fn func(node Node)) {
 	fn(n)
 
 	// apply to all the children
-	n.childNodes.ForEach(func(_, child Node) {
+	n.childNodes.ForEach(func(_ int, child Node) {
 		child.apply(fn)
 	})
-}
-
-func (n *node) setNodeType(nType int) {
-	n.nodeType = nType
 }
 
 func (n *node) setParentElement(parent Element) {
@@ -155,7 +150,6 @@ func (n *node) NextSibling() Node {
 // NodeName method return a DOMString containing
 // the name of the node type.
 func (n *node) NodeName() string {
-	// TODO func (n *node) NodeName() string
 	// https://dom.spec.whatwg.org/#dom-node-nodename
 	return ""
 }
@@ -163,8 +157,8 @@ func (n *node) NodeName() string {
 // NodeType return an integer that identifies
 // what the node is.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
-func (n *node) NodeType() int {
-	return n.nodeType
+func (n *node) NodeType() NodeType {
+	return 0
 }
 
 // OwnerDocument method return the top-level document
@@ -172,7 +166,7 @@ func (n *node) NodeType() int {
 func (n *node) OwnerDocument() Document {
 	// TODO func (n *node) OwnerDocument() Document
 	// https://developer.mozilla.org/en-US/docs/Web/API/Node/ownerDocument
-	return NewDocument()
+	return n.document
 }
 
 // ParentNode method returns a node that is the
@@ -240,11 +234,9 @@ func (n *node) AppendChild(child Node) Node {
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode
 func (n *node) CloneNode(deep bool) Node {
 	clone := newNode()
-	clone.setNodeType(n.NodeType())
 
 	// Copy node children
 	if deep {
-		// TODO copy node children
 		for _, child := range n.childNodes.Values() {
 			clone.AppendChild(child.CloneNode(true))
 		}
@@ -296,7 +288,7 @@ func (n *node) GetRootNode() Node {
 		return n.parentNode.GetRootNode()
 	}
 
-	// No parent, this parent is the root node.
+	// No parent, this node is the root node.
 	return n
 }
 
@@ -350,6 +342,15 @@ func (n *node) InsertBefore(new Node, reference Node) Node {
 // IsEqualNode method return whether two nodes are equal.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/isEqualNode
 func (n *node) IsEqualNode(other Node) bool {
+	if other == nil {
+		goto notEqual
+	}
+
+	// Check nodeType
+	if n.NodeType() != other.NodeType() {
+		goto notEqual
+	}
+
 	// Checking the list of childrens length
 	if n.childNodes.Length() != other.ChildNodes().Length() {
 		goto notEqual
@@ -362,11 +363,6 @@ func (n *node) IsEqualNode(other Node) bool {
 				goto notEqual
 			}
 		}
-	}
-
-	// Check nodeType
-	if n.NodeType() != other.NodeType() {
-		goto notEqual
 	}
 
 	return true
