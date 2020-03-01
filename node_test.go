@@ -5,6 +5,33 @@ import (
 	"testing"
 )
 
+/*****************************************************
+ **************** Getters & Setters ******************
+ *****************************************************/
+
+func TestChildNodes(t *testing.T) {
+	// Creating node & child
+	node := newNode()
+	child := newNode()
+
+	// Appending child
+	child = node.AppendChild(child)
+
+	// Getting children node list of node.
+	childNodes := node.ChildNodes()
+
+	if same := childNodes.Item(0).IsSameNode(child); !same {
+		t.Log("Node first child node must be equal to child. (pointer must be the same)")
+		t.Logf("child  pointer address                : %p", child)
+		t.Logf("Node first child node pointer address : %p", childNodes)
+		t.Fail()
+	}
+}
+
+/*****************************************************
+ ********************* Methods ***********************
+ *****************************************************/
+
 func TestAppendChild(t *testing.T) {
 	// Creating node & child
 	node := newNode()
@@ -216,16 +243,6 @@ func TestIsEqualNode(t *testing.T) {
 	// Checking that clone is equal node
 	if equal := node.IsEqualNode(clone); !equal {
 		t.Log("Clone must be equal to node. (same node type)")
-		t.Fail()
-	}
-
-	// Changing node type so clone is
-	// not equal to node.
-	clone.setNodeType(1)
-
-	// Checking that clone is not equal node
-	if equal := node.IsEqualNode(clone); equal {
-		t.Log("Clone must not be equal to node. (different node type)")
 		t.Fail()
 	}
 
