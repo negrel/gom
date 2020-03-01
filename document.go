@@ -65,8 +65,8 @@ type Document interface {
 	AdoptNode(Node)
 	CreateAttribute(string) Attr
 	CreateComment() Node
-	CreateDocumentFragment() Node
-	CreateElement() Node
+	CreateDocumentFragment() DocumentFragment
+	CreateElement(string) Element
 	CreateTextNode() Node
 	GetElementsByClassName(string) Element
 	GetElementsByTagName(string) Element
@@ -217,14 +217,15 @@ func (d *document) CreateComment() Node {
 // CreateDocumentFragment creates a new comment node, and
 // returns it.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/createDocumentFragment
-func (d *document) CreateDocumentFragment() Node {
+func (d *document) CreateDocumentFragment() DocumentFragment {
 	// TODO func (d *document) CreateDocumentFragment() Node
+	return createDocumentFragment()
 }
 
 // CreateElement creates a new comment node, and
 // returns it.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-func (d *document) CreateElement(tagName string) Node {
+func (d *document) CreateElement(tagName string) Element {
 	return createElement(tagName)
 }
 
@@ -233,6 +234,7 @@ func (d *document) CreateElement(tagName string) Node {
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/createTextNode
 func (d *document) CreateTextNode() Node {
 	// TODO func (d *document) CreateTextNode() Node
+	return newNode()
 }
 
 // GetElementsByClassName method of Document interface
@@ -241,6 +243,7 @@ func (d *document) CreateTextNode() Node {
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByClassName
 func (d *document) GetElementsByClassName(className string) Element {
 	// TODO func (d *document) GetElementsByClassName(className string) Element
+	return createElement("")
 }
 
 // GetElementsByTagName method of Document interface
@@ -249,6 +252,7 @@ func (d *document) GetElementsByClassName(className string) Element {
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementsByTagName
 func (d *document) GetElementsByTagName(tagName string) Element {
 	// TODO func (d *document) GetElementsByTagName(tagName string) Element
+	return createElement("")
 }
 
 // ImportNode method creates a copy of a Node or
@@ -257,6 +261,7 @@ func (d *document) GetElementsByTagName(tagName string) Element {
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/importNode
 func (d *document) ImportNode(node Node, deep bool) Node {
 	// TODO func (d *document) ImportNode(node Node, deep bool) Node
+	return newNode()
 }
 
 // GetElementById returns an Element object representing
@@ -264,6 +269,7 @@ func (d *document) ImportNode(node Node, deep bool) Node {
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById
 func (d *document) GetElementById(id string) Element {
 	// TODO func (d *document) GetElementById(id string) Element
+	return createElement("")
 }
 
 // QuerySelector returns the first Element within the document
