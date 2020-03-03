@@ -16,6 +16,7 @@ type NamedNodeMap interface {
 	Item(int) Attr
 	SetNamedItem(Attr)
 	RemoveNamedItem(string) (Attr, GOMError)
+	Values() []Attr // Not part of DOM specification
 }
 
 var _ NamedNodeMap = &namedNodeMap{}
@@ -51,18 +52,7 @@ func (n *namedNodeMap) GetNamedItem(name string) Attr {
 // the index is higher or equal to the number of nodes.
 // (Slower than GetNamedItem)
 func (n *namedNodeMap) Item(index int) Attr {
-	arr := make([]Attr, n.Length())
-
-	for _, value := range n.dict {
-		arr = append(arr, value)
-	}
-
-	// Alphabetical sort
-	sort.Slice(arr, func(i, j int) bool {
-		return arr[i].Name() < arr[j].Name()
-	})
-
-	return arr[index]
+	return n.Values()[index]
 }
 
 // SetNamedItem Replaces, or adds, the Attr identified
@@ -84,4 +74,20 @@ func (n *namedNodeMap) RemoveNamedItem(name string) (Attr, GOMError) {
 	delete(n.dict, name)
 
 	return attr, nil
+}
+
+// Values return an iterable array of attributes.
+func (n *namedNodeMap) Values() []Attr {
+	arr := make([]Attr, n.Length())
+
+	for _, value := range n.dict {
+		arr = append(arr, value)
+	}
+
+	// Alphabetical sort
+	sort.Slice(arr, func(i, j int) bool {
+		return arr[i].Name() < arr[j].Name()
+	})
+
+	return arr
 }

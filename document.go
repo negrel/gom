@@ -1,8 +1,6 @@
 package gom
 
-import (
-	"golang.org/x/text/encoding"
-)
+import "golang.org/x/text/encoding"
 
 /* NOTE Document missing props & methods (OFFICIAL DOM) :
  * ** Props **

@@ -1,9 +1,5 @@
 package gom
 
-import (
-	"strings"
-)
-
 // Attr interface represents one of a DOM element's
 // attributes as an object.
 // https://developer.mozilla.org/en-US/docs/Web/API/Attr
