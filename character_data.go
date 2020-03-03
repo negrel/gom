@@ -8,6 +8,7 @@ import "strings"
 // https://dom.spec.whatwg.org/#interface-characterdata
 type CharacterData interface {
 	Node
+	NonDocumentTypeChildNode
 	/* GETTERS & SETTERS (props) */
 	Data() string
 	Length() int
@@ -23,7 +24,8 @@ type CharacterData interface {
 var _ CharacterData = &characterData{}
 
 type characterData struct {
-	node
+	*node
+	*nonDocumentTypeChildNode
 	data string
 }
 
