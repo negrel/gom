@@ -4,14 +4,19 @@ package gom
 // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection
 // https://dom.spec.whatwg.org/#htmlcollection
 type GOMLCollection interface {
+	/* GETTERS & SETTERS (props) */
+	Length() int
+	/* METHODS */
 	Item(int) Element
 }
+
+var _ GOMLCollection = &gomlCollection{}
 
 type gomlCollection struct {
 	list []Element
 }
 
-func newGOMLCollection() *gomlCollection {
+func newGOMLCollection() GOMLCollection {
 	return &gomlCollection{
 		list: []Element{},
 	}
