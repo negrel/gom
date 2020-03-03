@@ -34,6 +34,7 @@ import (
 type Element interface {
 	/* EMBEDDED INTERFACE */
 	Node
+	NonDocumentTypeChildNode
 	/* GETTERS & SETTERS (props) */
 	Attributes() NamedNodeMap
 	ClassList() []string
@@ -76,6 +77,7 @@ var _ Node = &element{}
 
 type element struct {
 	*node
+	*nonDocumentTypeChildNode
 	attributes NamedNodeMap
 	classList  []string
 	tagName    string
@@ -353,6 +355,7 @@ func (e *element) GetClientRects() []GOMRect {
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByClassName
 func (e *element) GetElementsByClassName(className string) GOMLCollection {
 	// TODO func (e *element) GetElementsByClassName() GOMLCollection
+	return newGOMLCollection()
 }
 
 // GetElementsByTagName method returns a live GOMLCollection
@@ -360,6 +363,7 @@ func (e *element) GetElementsByClassName(className string) GOMLCollection {
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByTagName
 func (e *element) GetElementsByTagName(tagName string) GOMLCollection {
 	// TODO func (e *element) GetElementsByTagName() GOMLCollection
+	return newGOMLCollection()
 }
 
 // HasAttribute method returns a Boolean value indicating
@@ -377,6 +381,7 @@ func (e *element) HasAttribute(name string) bool {
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelector
 func (e *element) QuerySelector(selector string) Node {
 	// TODO func (e *element) QuerySelector(selector string) Node
+	return newNode()
 }
 
 // QuerySelectorAll returns a static (not live) NodeList
@@ -386,6 +391,7 @@ func (e *element) QuerySelector(selector string) Node {
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelectorAll
 func (e *element) QuerySelectorAll(selector string) NodeList {
 	// TODO func (e *element) QuerySelectorAll(selector string) Node
+	return newNodeList()
 }
 
 // RemoveAttribute removes the attribute with the specified
