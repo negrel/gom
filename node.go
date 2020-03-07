@@ -1,5 +1,9 @@
 package gom
 
+import (
+	e "github.com/negrel/gom/exception"
+)
+
 /* NOTE Node missing props & methods (OFFICIAL DOM) :
  * ** Props **
  * baseURI
@@ -48,8 +52,8 @@ type Node interface {
 	IsEqualNode(other Node) bool
 	IsSameNode(other Node) bool
 	Normalize()
-	RemoveChild(child Node) (Node, GOMError)
-	ReplaceChild(newChild, oldChild Node) GOMError
+	RemoveChild(child Node) (Node, e.Exception)
+	ReplaceChild(newChild, oldChild Node) e.Exception
 }
 
 var _ Node = &node{}
@@ -389,13 +393,13 @@ func (n *node) Normalize() {
 // RemoveChild method removes a child node from the DOM
 // and returns the removed node.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild
-func (n *node) RemoveChild(child Node) (Node, GOMError) {
+func (n *node) RemoveChild(child Node) (Node, e.Exception) {
 	childIndex := n.childNodes.IndexOf(child)
 
 	// Child not found.
 	if err := childIndex == -1; err {
 		return child,
-			newGOMError("The node to be removed is not a child of this node", "ErrNotFound")
+			e.New(e.NotFoundError, "The node to be removed is not a child of this node.")
 	}
 
 	// Slice of all the child before the child to remove
@@ -428,12 +432,12 @@ func (n *node) RemoveChild(child Node) (Node, GOMError) {
 // ReplaceChild method replaces a child node within the
 // given (parent) node.
 // https://developer.mozilla.org/en-US/docs/Web/API/Node/replaceChild
-func (n *node) ReplaceChild(newChild, oldChild Node) GOMError {
+func (n *node) ReplaceChild(newChild, oldChild Node) e.Exception {
 
 	index := n.childNodes.IndexOf(oldChild)
 
 	if index == -1 {
-		return newGOMError("The node to be replaced is not a child of this node", "ErrNotFound")
+		return e.New(e.NotFoundError, "The node to be replaced is not a child of this node.")
 	}
 
 	n.childNodes.set(index, newChild)
