@@ -1,6 +1,10 @@
 package gom
 
-import "sort"
+import (
+	"sort"
+
+	e "github.com/negrel/gom/exception"
+)
 
 // NamedNodeMap interface represents a collection
 // of Attr objects.
@@ -15,7 +19,7 @@ type NamedNodeMap interface {
 	GetNamedItem(string) Attr
 	Item(int) Attr
 	SetNamedItem(Attr)
-	RemoveNamedItem(string) (Attr, GOMError)
+	RemoveNamedItem(string) (Attr, e.Exception)
 	Values() []Attr // Not part of DOM specification
 }
 
@@ -33,6 +37,7 @@ func (n *namedNodeMap) getNamedItem(name string) (Attr, bool) {
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 func (n *namedNodeMap) Length() int {
 	return len(n.dict)
@@ -41,6 +46,7 @@ func (n *namedNodeMap) Length() int {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 // GetNamedItem return the attribute corresponding to
 // the given name.
@@ -63,12 +69,12 @@ func (n *namedNodeMap) SetNamedItem(attr Attr) {
 }
 
 // RemoveNamedItem remove the specified attribute.
-func (n *namedNodeMap) RemoveNamedItem(name string) (Attr, GOMError) {
+func (n *namedNodeMap) RemoveNamedItem(name string) (Attr, e.Exception) {
 	attr := n.dict[name]
 
 	// Check if attribute exist
 	if attr == nil {
-		return nil, newGOMError("The attr to be removed is not part of this element", "ErrNotFound")
+		return nil, e.New(e.NotFoundError, "The attr to be removed is not part of this element")
 	}
 
 	delete(n.dict, name)

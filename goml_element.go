@@ -24,6 +24,7 @@ type gomlElement struct {
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // Hidden return true if the element is hidden or not.
 // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/hidden
@@ -55,6 +56,7 @@ func (e *gomlElement) Style() interface{} {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 // Click handle click event a GOML element.
 func (e *gomlElement) Click() {}

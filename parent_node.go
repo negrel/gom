@@ -15,8 +15,9 @@ func newParentNode() *ParentNode {
 }
 
 /*****************************************************
- ********************* Getters ***********************
+ **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // FirstElementChild returns the object's first child
 // Element, or null if there are no child elements.
@@ -37,6 +38,7 @@ func (pn *ParentNode) LastElementChild() Element {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 // Append inserts a set of Node objects or DOMString
 // objects after the last child of the ParentNode

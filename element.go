@@ -93,6 +93,7 @@ func createElement(tagName string) Element {
 /*****************************************************
  **************** Embedded interface *****************
  *****************************************************/
+// ANCHOR Embedded interface
 
 /* Node */
 /* - Props */
@@ -179,6 +180,7 @@ notEqual:
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // Attributes returns a live collection of all
 // attribute nodes registered to the specified node.
@@ -311,6 +313,7 @@ func (e *element) TagName() string {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 // GetAttribute return the value of a specified attribute
 // on the element.

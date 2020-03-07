@@ -25,6 +25,7 @@ func newGOMLCollection() GOMLCollection {
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // Length method return the number of elements in
 // the collection
@@ -35,6 +36,7 @@ func (c *gomlCollection) Length() int {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 // Item return the element at the given index
 // of the collection.

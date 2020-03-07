@@ -123,6 +123,7 @@ func (n *node) setParentNode(parent Node) {
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // ChildNodes return a node list containing
 func (n *node) ChildNodes() NodeList {
@@ -214,6 +215,7 @@ func (n *node) SetTextContent(content string) {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 // AppendChild methods adds the specified childNode
 // argument as the last child to the current node.

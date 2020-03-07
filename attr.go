@@ -1,5 +1,7 @@
 package gom
 
+import "strings"
+
 // Attr interface represents one of a DOM element's
 // attributes as an object.
 // https://developer.mozilla.org/en-US/docs/Web/API/Attr
@@ -36,6 +38,7 @@ func createAttribute(name string) Attr {
 /*****************************************************
  **************** Embedded interface *****************
  *****************************************************/
+// ANCHOR Embedded interface
 
 /* Node */
 /* - Props */
@@ -95,6 +98,7 @@ notEqual:
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // Name return the attribute name of an element
 // https://developer.mozilla.org/en-US/docs/Web/API/Attr/localName
@@ -116,7 +120,3 @@ func (a *attr) Value() string {
 func (a *attr) SetValue(value string) {
 	a.value = value
 }
-
-/*****************************************************
- ********************* Methods ***********************
- *****************************************************/

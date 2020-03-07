@@ -95,8 +95,8 @@ func NewDocument(name string) Document {
 		body:            newNode(),
 		characterSet:    nil,
 		docType:         newDocumentType(name),
-		documentElement: nil, // TODO change for real documentElement
-		head:            nil, // TODO change for real head element
+		documentElement: nil,
+		head:            nil,
 		hidden:          false,
 		visibilityState: "visible",
 	}
@@ -105,6 +105,7 @@ func NewDocument(name string) Document {
 /*****************************************************
  **************** Embedded interface *****************
  *****************************************************/
+// ANCHOR Embedded interface
 
 /* Node */
 /* - Props */
@@ -122,6 +123,7 @@ func (d *document) NodeType() NodeType {
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // Body return the <body> element of the current document
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/body
@@ -179,6 +181,7 @@ func (d *document) SetCharacterSet(charSet encoding.Encoding) {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 // AdoptNode transfers a node from another document
 // into the document on which the method was called.
@@ -216,7 +219,6 @@ func (d *document) CreateComment() Node {
 // returns it.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/createDocumentFragment
 func (d *document) CreateDocumentFragment() DocumentFragment {
-	// TODO func (d *document) CreateDocumentFragment() Node
 	return createDocumentFragment()
 }
 
@@ -230,9 +232,8 @@ func (d *document) CreateElement(tagName string) Element {
 // CreateTextNode creates a new comment node, and
 // returns it.
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/createTextNode
-func (d *document) CreateTextNode() Node {
-	// TODO func (d *document) CreateTextNode() Node
-	return newNode()
+func (d *document) CreateTextNode(content string) Text {
+	return createTextNode(content)
 }
 
 // GetElementsByClassName method of Document interface

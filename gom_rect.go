@@ -29,6 +29,8 @@ type gomRect struct {
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
+
 // X coordinate of the DOMRect's origin.
 // https://developer.mozilla.org/en-US/docs/Web/API/DOMRectReadOnly/x
 func (r *gomRect) X() int {

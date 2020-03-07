@@ -13,6 +13,7 @@ var _ Node = &GOMLSpanElement{}
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // ScrollHeight return always 0 for a span element
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
@@ -44,7 +45,3 @@ func (s *GOMLSpanElement) ScrollWidth() int {
 func (s *GOMLSpanElement) TagName() string {
 	return "span"
 }
-
-/*****************************************************
- ********************* Methods ***********************
- *****************************************************/

@@ -1,7 +1,5 @@
 package gom
 
-import ()
-
 // NodeList objects are collections of nodes (live)
 // https://developer.mozilla.org/en-US/docs/Web/API/NodeList
 type NodeList interface {
@@ -45,6 +43,7 @@ func (nl *nodeList) set(index int, node Node) {
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // Length method return the number of node in the list
 func (nl *nodeList) Length() int {
@@ -54,6 +53,7 @@ func (nl *nodeList) Length() int {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 // ForEach apply the given function for each of
 // the Node in the list.

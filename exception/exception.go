@@ -39,6 +39,7 @@ func New(code int, format string, msg ...interface{}) Exception {
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // Message return the error message
 func (e *exception) Message() string {
@@ -53,6 +54,7 @@ func (e *exception) Name() string {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 // Fprint method print the error to the given
 // writer

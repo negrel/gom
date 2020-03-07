@@ -49,6 +49,7 @@ func (dt *documentType) setSystemId(sId string) {
 /*****************************************************
  **************** Embedded interface *****************
  *****************************************************/
+// ANCHOR Embedded interface
 
 /* Node */
 /* - Props */
@@ -114,6 +115,7 @@ notEqual:
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // Name return the name of the document type
 // eg "goml" for <!DOCTYPE GOML>
@@ -130,7 +132,3 @@ func (dt *documentType) PublicId() string {
 func (dt *documentType) SystemId() string {
 	return dt.systemId
 }
-
-/*****************************************************
- ********************* Methods ***********************
- *****************************************************/

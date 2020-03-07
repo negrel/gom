@@ -7,6 +7,7 @@ import "strings"
 // https://developer.mozilla.org/en-US/docs/Web/API/CharacterData
 // https://dom.spec.whatwg.org/#interface-characterdata
 type CharacterData interface {
+	/* EMBEDDED INTERFACE */
 	Node
 	NonDocumentTypeChildNode
 	/* GETTERS & SETTERS (props) */
@@ -32,6 +33,7 @@ type characterData struct {
 /*****************************************************
  **************** Getters & Setters ******************
  *****************************************************/
+// ANCHOR Getters & Setters
 
 // Data return textual data contained in this object
 // https://dom.spec.whatwg.org/#dom-characterdata-data
@@ -55,6 +57,7 @@ func (cd *characterData) SetData(data string) {
 /*****************************************************
  ********************* Methods ***********************
  *****************************************************/
+// ANCHOR Methods
 
 func (cd *characterData) AppendData(data string) string {
 	var b strings.Builder
@@ -88,9 +91,13 @@ func (cd *characterData) InsertData(offset uint, data string) string {
 	return cd.data
 }
 
+// ReplaceData replace the specified amount of characters,
+// starting at the specified offset, with the specified
+// string and return the modified string.
+// https://dom.spec.whatwg.org/#concept-cd-replace
 func (cd *characterData) ReplaceData(offset, count uint, data string) {
-	cd.DeleteData(offset, count)
-	cd.InsertData(offset, data)
+	length := cd.Length()
+
 }
 
 func (cd *characterData) SubstringData(offset, count uint) string {

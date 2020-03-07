@@ -18,6 +18,11 @@ type nonDocumentTypeChildNode struct {
 	node
 }
 
+/*****************************************************
+ **************** Getters & Setters ******************
+ *****************************************************/
+// ANCHOR Getters & Setters
+
 func (ndtcn *nonDocumentTypeChildNode) PreviousElementSibling() Element {
 	var node Node = ndtcn
 
